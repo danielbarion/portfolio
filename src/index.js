@@ -4,17 +4,17 @@ import 'assets/css/base.styl'
 import App from './modules/app'
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import * as serviceWorker from './serviceWorker'
-import appContext from 'context/app-context'
+import AppContext from 'context/app-context'
 
 ReactDOM.render(
-	<appContext>
+	<AppContext>
 		<BrowserRouter>
 			<Switch>
 				<Route path='/' exact={true} component={App} />
 				<Route path='*' component={App} />
 			</Switch>
 		</ BrowserRouter>
-	</appContext>
+	</AppContext>
 	, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
