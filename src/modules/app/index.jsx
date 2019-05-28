@@ -3,6 +3,7 @@
  */
 import React, { Component } from 'react'
 import { appContext } from 'context/app-context'
+import { ReactComponent as LogoTest } from 'assets/svg/logo_test.svg'
 
 class App extends Component {
 	constructor(props) {
@@ -33,6 +34,7 @@ class App extends Component {
 		const _root = 'app'
 		const _header = `${_root}-header`
 		const _navigation = `${_header}-navigation`
+		const _logo = `${_header}-logo`
 
 		/**
 		 * render functions
@@ -45,7 +47,14 @@ class App extends Component {
 
 		const header = () => (
 			<div className={_header} id="header">
+				{logo()}
 				{navigation()}
+			</div>
+		)
+
+		const logo = () => (
+			<div className={_logo}>
+				<LogoTest />
 			</div>
 		)
 
