@@ -5,13 +5,19 @@
 
 	&-header
 		display grid
-		grid-template-areas 'logo navigation'
+		grid-template-areas 'logo navigation'\
+												'bottom .'
 		grid-template-columns 128px auto
+		grid-template-rows auto 175px
 		height 100vh
 		width 100vw
+		overflow hidden
 
 		&-logo
 			grid-area logo
+
+		&-bottom
+			grid-area bottom
 
 		&-navigation
 			position relative
