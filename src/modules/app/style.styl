@@ -1,5 +1,60 @@
 .app
 	height 100vh
 	width 100vw
-	background linear-gradient(30deg, #22E3EA 0%, #4944db 46%, #50036e 100%)
+	background-color white
+	// background linear-gradient(30deg, #22E3EA 0%, #4944db 46%, #50036e 100%)
 	// linear-gradient(138.69deg, #50036E 0%, rgba(162,61,196,1) 31.65%, rgba(92,238,252,1) 100%)
+
+	&-header
+		display grid
+		grid-template-areas 'logo navigation'
+		grid-template-columns 64px auto
+		height 100vh
+		width 100vw
+
+		&-navigation
+			position relative
+			grid-area navigation
+			height 100%
+
+			& ul
+				position relative
+				z-index 2
+				display grid
+				grid-template-columns repeat(auto-fit, 100px) 2%
+				height 60px
+				justify-content flex-end
+				align-items center
+
+				& li
+					display flex
+					justify-content center
+
+					a
+						font-family 'Ubuntu', sans-serif
+						font-weight 700
+						text-decoration none
+						color white
+						font-size 16px
+						padding-left 5px
+						padding-right 5px
+						padding-top 5px
+						padding-bottom 7px
+						transition 350ms ease
+
+						&:hover
+							box-shadow inset 0 -2.5px 0 0 white
+
+			&::after
+				content ''
+				position absolute
+				right 0
+				top 0
+				min-height 232px
+				max-height 100%
+				min-width 632px
+				height 100%
+				width 60vw
+				background url('../../assets/svg/top.svg')
+				background-repeat no-repeat
+				background-size contain
