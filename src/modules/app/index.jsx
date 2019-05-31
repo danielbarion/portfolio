@@ -3,7 +3,7 @@
  */
 import React, { Component } from 'react'
 import { appContext } from 'context/app-context'
-import { ReactComponent as Logo } from 'assets/svg/logo_test.svg'
+import { ReactComponent as Logo } from 'assets/svg/logo.svg'
 import { ReactComponent as Bottom } from 'assets/svg/bottom.svg'
 
 class App extends Component {
