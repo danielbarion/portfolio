@@ -13,14 +13,18 @@ class App extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
+			buildings: 30,
+			particles: 3000,
 			renderer: null,
 			cityElem: null,
 			camera: null,
 			createCarPos: true,
 			uSpeed: 0.001,
 			// Fog Background
-			setColor: 0xF02050,
-			// setColor: 0xF2F111
+			setColor: 0x43D5F9,
+			// setColor: 0x00A1F2,
+			// setColor: 0xF02050,
+			// setColor: 0xF2F111,
 			// setColor: 0xFF6347,
 			setTintNum: true,
 			scene: new THREE.Scene(),
@@ -39,7 +43,7 @@ class App extends Component {
 		this.initializeFogBackground = this.initializeFogBackground.bind(this)
 		this.initializeCity = this.initializeCity.bind(this)
 		this.initializeLights = this.initializeLights.bind(this)
-		this.generateCar = this.generateCar.bind(this)
+		this.createLine = this.createLine.bind(this)
 		this.setTintColor = this.setTintColor.bind(this)
 		this.mouseFunctions = this.mouseFunctions.bind(this)
 		this.onWindowResize = this.onWindowResize.bind(this)
@@ -66,6 +70,7 @@ class App extends Component {
 			this.mouseFunctions(),
 			this.generateLines(),
 			this.initializeCity()
+			// this.gridHelper()
 		), 300)
 		setTimeout(() => this.animate(), 600)
 	}
@@ -94,7 +99,7 @@ class App extends Component {
 		// very close
 		// camera.position.set(0, 2, 14)
 		// little far
-		camera.position.set(0, 6, 20)
+		camera.position.set(0, 6, 16)
 
 		this.setState({ camera })
 	}
@@ -103,7 +108,7 @@ class App extends Component {
 		const { scene, setColor } = this.state
 
 		scene.background = new THREE.Color(setColor)
-		scene.fog = new THREE.Fog(setColor, 12, 30)
+		scene.fog = new THREE.Fog(setColor, 6, 30)
 		// scene.fog = new THREE.Fog(setColor, 10, 16)
 		// scene.fog = new THREE.FogExp2(setColor, 0.05)
 
@@ -140,47 +145,51 @@ class App extends Component {
 			smoke,
 			city,
 			camera,
-			renderer
+			renderer,
+			buildings,
+			particles
 		} = this.state
 		const segments = 2
 
-		for (let i = 1; i < 100; i++) {
+		for (let i = 1; i < buildings; i++) {
 			const geometry = new THREE.CubeGeometry(1, 0, 0, segments, segments, segments)
 			const material = new THREE.MeshStandardMaterial({
 				color: this.setTintColor(),
 				wireframe: false,
 				//opacity:0.9,
 				//transparent:true,
-				//roughness: 0.3,
-				//metalness: 1,
+				roughness: 0.3,
+				// metalness: 1,
 				flatShading: THREE.SmoothShading,
-				//shading:THREE.FlatShading,
+				shading:THREE.FlatShading,
 				side: THREE.DoubleSide
 			})
 
-			const wmaterial = new THREE.MeshLambertMaterial({
-				color: 0xFFFFFF,
-				wireframe: true,
-				transparent: true,
-				opacity: 0.03,
-				side: THREE.DoubleSide/*,
-				shading:THREE.FlatShading*/
-			})
+			// const wmaterial = new THREE.MeshLambertMaterial({
+			// 	// color: 0xFFFFFF,
+			// 	color: 0x000000,
+			// 	wireframe: true,
+			// 	transparent: true,
+			// 	opacity: 0.03,
+			// 	side: THREE.DoubleSide,
+			// 	// shading:THREE.FlatShading
+			// })
 
 			const cube = new THREE.Mesh(geometry, material)
-			const wire = new THREE.Mesh(geometry, wmaterial)
+			// const wire = new THREE.Mesh(geometry, wmaterial)
 			const floor = new THREE.Mesh(geometry, material)
-			const wfloor = new THREE.Mesh(geometry, wmaterial)
+			// const wfloor = new THREE.Mesh(geometry, wmaterial)
 
-			cube.add(wfloor)
+			// cube.add(wfloor)
 			cube.castShadow = true
 			cube.receiveShadow = true
 			cube.rotationValue = 0.1 + Math.abs(this.mathRandom(8))
 
-			//floor.scale.x = floor.scale.z = 1+this.mathRandom(0.33)
+			// floor.scale.x = floor.scale.z = 1+this.mathRandom(0.33)
 			floor.scale.y = 0.05 //+this.mathRandom(0.5)
 			cube.scale.y = 0.1 + Math.abs(this.mathRandom(8))
-			//TweenMax.to(cube.scale, 1, {y:cube.rotationValue, repeat:-1, yoyo:true, delay:i*0.005, ease:Power1.easeInOut});
+
+			// TweenMax.to(cube.scale, 1, {y:cube.rotationValue, repeat:-1, yoyo:true, delay:i*0.005, ease:Power1.easeInOut});
 			/*cube.setScale = 0.1+Math.abs(this.mathRandom());
 
 			TweenMax.to(cube.scale, 4, {y:cube.setScale, ease:Elastic.easeInOut, delay:0.2*i, yoyo:true, repeat:-1});
@@ -188,7 +197,7 @@ class App extends Component {
 
 			var cubeWidth = 0.9
 			cube.scale.x = cube.scale.z = cubeWidth + this.mathRandom(1 - cubeWidth)
-			//cube.position.y = cube.scale.y / 2;
+			// cube.position.y = cube.scale.y / 2;
 			cube.position.x = Math.round(this.mathRandom())
 			cube.position.z = Math.round(this.mathRandom())
 
@@ -197,13 +206,13 @@ class App extends Component {
 			town.add(floor)
 			town.add(cube)
 		};
-		//----------------------------------------------------------------- Particular
 
-		const gmaterial = new THREE.MeshToonMaterial({ color: 0xFFFF00, side: THREE.DoubleSide })
+		// Particles
+		const gmaterial = new THREE.MeshToonMaterial({ color: 0xFFFFFF, side: THREE.DoubleSide })
 		const gparticular = new THREE.CircleGeometry(0.01, 3)
 		const aparticular = 5
 
-		for (let h = 1; h < 300; h++) {
+		for (let h = 1; h < particles; h++) {
 			const particular = new THREE.Mesh(gparticular, gmaterial)
 			particular.position.set(this.mathRandom(aparticular), this.mathRandom(aparticular), this.mathRandom(aparticular))
 			particular.rotation.set(this.mathRandom(), this.mathRandom(), this.mathRandom())
@@ -218,6 +227,7 @@ class App extends Component {
 			opacity: 0.9,
 			transparent: true
 		});
+		
 		var pgeometry = new THREE.PlaneGeometry(60, 60)
 		var pelement = new THREE.Mesh(pgeometry, pmaterial)
 		pelement.rotation.x = -90 * Math.PI / 180
@@ -288,12 +298,20 @@ class App extends Component {
 			}
 		}
 
+		function onMouseClick(event) {
+			event.preventDefault();
+
+			mouse.x = (event.clientX / window.innerWidth) * 3 - 1;
+			mouse.y = -(event.clientY / window.innerHeight) * 3 + 1;
+		}
+
 		// window.addEventListener('mousemove', onMouseMove, false)
-		window.addEventListener('touchstart', onDocumentTouchStart, false )
-		window.addEventListener('touchmove', onDocumentTouchMove, false )
+		// window.addEventListener('touchstart', onDocumentTouchStart, false )
+		// window.addEventListener('touchmove', onDocumentTouchMove, false )
+		// window.addEventListener('click', onMouseClick, false )
 	}
 
-	generateCar(cScale = 2, cPos = 20, cColor = 0xFFFF00) {
+	createLine(cScale = 2, cPos = 20, cColor = 0xFFFF00) {
 		const { city } = this.state
 		let {	createCarPos } = this.state
 		var cMat = new THREE.MeshToonMaterial({ color: cColor, side: THREE.DoubleSide })
@@ -326,14 +344,14 @@ class App extends Component {
 	}
 
 	generateLines() {
-		for (var i = 0; i < 60; i++) {
-			this.generateCar(0.1, 20)
-		}
+		// for (var i = 0; i < 60; i++) {
+		// 	this.createLine(0.1, 20)
+		// }
 	}
 
 	setCamera() {
-		this.generateCar(0.1, 20, 0xFFFFFF)
-		//TweenMax.to(camera.position, 1, {y:1+Math.random()*4, ease:Expo.easeInOut})
+		this.createLine(0.1, 20, 0xFFFFFF)
+		// TweenMax.to(camera.position, 1, {y:1+Math.random()*4, ease:Expo.easeInOut})
 	}
 
 	animate() {
@@ -352,20 +370,28 @@ class App extends Component {
 
 		city.rotation.y -= ((mouse.x * 8) - camera.rotation.y) * uSpeed
 		city.rotation.x -= (-(mouse.y * 2) - camera.rotation.x) * uSpeed
-		if (city.rotation.x < -0.05) city.rotation.x = -0.05
-		else if (city.rotation.x > 1) city.rotation.x = 1
-		const cityRotation = Math.sin(Date.now() / 5000) * 13
-		//city.rotation.x = cityRotation * Math.PI / 180
 
-		//console.log(city.rotation.x)
-		//camera.position.y -= (-(mouse.y * 20) - camera.rotation.y) * uSpeed
-
-		for (let index = 0, length = town.children.length; index < length; index++) {
-			const object = town.children[index]
-			//object.scale.y = Math.sin(time*50) * object.rotationValue
-			//object.rotation.y = (Math.sin((time/object.rotationValue) * Math.PI / 180) * 180)
-			//object.rotation.z = (Math.cos((time/object.rotationValue) * Math.PI / 180) * 180)
+		if (city.rotation.x < -0.05) {
+			city.rotation.x = -0.05
 		}
+		else if (city.rotation.x > 1) {
+			city.rotation.x = 1
+		}
+
+		const cityRotationX = Math.sin(Date.now() / 5000) * 13
+		city.rotation.x = cityRotationX * Math.PI / 180
+
+		const cityRotationY = (Date.now() / 5000) * 13
+		city.rotation.y = cityRotationY * 0.025
+
+		// const time = Date.now() * 0.00005;
+
+		// for (let index = 0, length = town.children.length; index < length; index++) {
+		// 	const object = town.children[index]
+		// 	// object.scale.y = Math.sin(time*50) * object.rotationValue
+		// 	// object.rotation.y = (Math.sin((time/object.rotationValue) * Math.PI / 180) * 180)
+		// 	// object.rotation.z = (Math.cos((time/object.rotationValue) * Math.PI / 180) * 180)
+		// }
 
 		smoke.rotation.y += 0.01
 		smoke.rotation.x += 0.01
