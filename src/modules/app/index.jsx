@@ -453,9 +453,9 @@ class App extends Component {
 
 		const header = () => (
 			<div className={_header}>
-				{logo()}
-				{navigation()}
-				{bottom()}
+				{/* {logo()} */}
+				{/* {navigation()} */}
+				{/* {bottom()} */}
 			</div>
 		)
 
