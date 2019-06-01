@@ -21,7 +21,7 @@ class App extends Component {
 			createCarPos: true,
 			uSpeed: 0.001,
 			// Fog Background
-			setColor: 0x43D5F9,
+			setColor: 0x00adff,
 			// setColor: 0x00A1F2,
 			// setColor: 0xF02050,
 			// setColor: 0xF2F111,
@@ -81,11 +81,11 @@ class App extends Component {
 		renderer.domElement.id = "city"
 
 		if (window.innerWidth > 800) {
-			renderer.shadowMap.enabled = true;
-			renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-			renderer.shadowMap.needsUpdate = true;
-			renderer.toneMapping = THREE.ReinhardToneMapping;
-		};
+			renderer.shadowMap.enabled = true
+			renderer.shadowMap.type = THREE.PCFSoftShadowMap
+			renderer.shadowMap.needsUpdate = true
+			renderer.toneMapping = THREE.ReinhardToneMapping
+		}
 
 		const cityElem = document.querySelector('.app-city')
 		cityElem.appendChild(renderer.domElement)
@@ -149,10 +149,11 @@ class App extends Component {
 			buildings,
 			particles
 		} = this.state
-		const segments = 2
+
+		const segments = 1
 
 		for (let i = 1; i < buildings; i++) {
-			const geometry = new THREE.CubeGeometry(1, 0, 0, segments, segments, segments)
+			const geometry = new THREE.BoxGeometry(1, 0, 0, segments, segments, segments)
 			const material = new THREE.MeshStandardMaterial({
 				color: this.setTintColor(),
 				wireframe: false,
@@ -161,7 +162,7 @@ class App extends Component {
 				roughness: 0.3,
 				// metalness: 1,
 				flatShading: THREE.SmoothShading,
-				shading:THREE.FlatShading,
+				// flatShading: THREE.FlatShading,
 				side: THREE.DoubleSide
 			})
 
@@ -188,24 +189,26 @@ class App extends Component {
 			// floor.scale.x = floor.scale.z = 1+this.mathRandom(0.33)
 			floor.scale.y = 0.05 //+this.mathRandom(0.5)
 			cube.scale.y = 0.1 + Math.abs(this.mathRandom(8))
+			// cube.scale.y = 0.1 + Math.abs(this.mathRandom(8))
 
-			// TweenMax.to(cube.scale, 1, {y:cube.rotationValue, repeat:-1, yoyo:true, delay:i*0.005, ease:Power1.easeInOut});
-			/*cube.setScale = 0.1+Math.abs(this.mathRandom());
+			// TweenMax.to(cube.scale, 1, {y:cube.rotationValue, repeat:-1, yoyo:true, delay:i*0.005, ease:Power1.easeInOut})
+			/* cube.setScale = 0.1+Math.abs(this.mathRandom())
 
-			TweenMax.to(cube.scale, 4, {y:cube.setScale, ease:Elastic.easeInOut, delay:0.2*i, yoyo:true, repeat:-1});
-			TweenMax.to(cube.position, 4, {y:cube.setScale / 2, ease:Elastic.easeInOut, delay:0.2*i, yoyo:true, repeat:-1});*/
+			TweenMax.to(cube.scale, 4, {y:cube.setScale, ease:Elastic.easeInOut, delay:0.2*i, yoyo:true, repeat:-1})
+			TweenMax.to(cube.position, 4, {y:cube.setScale / 2, ease:Elastic.easeInOut, delay:0.2*i, yoyo:true, repeat:-1}) */
 
 			var cubeWidth = 0.9
 			cube.scale.x = cube.scale.z = cubeWidth + this.mathRandom(1 - cubeWidth)
-			// cube.position.y = cube.scale.y / 2;
+			// cube.position.y = cube.scale.y / 2
 			cube.position.x = Math.round(this.mathRandom())
 			cube.position.z = Math.round(this.mathRandom())
 
 			floor.position.set(cube.position.x, 0/*floor.scale.y / 2*/, cube.position.z)
+			// floor.position.set(cube.position.x, floor.scale.y / 2, cube.position.z)
 
 			town.add(floor)
 			town.add(cube)
-		};
+		}
 
 		// Particles
 		const gmaterial = new THREE.MeshToonMaterial({ color: 0xFFFFFF, side: THREE.DoubleSide })
@@ -226,8 +229,8 @@ class App extends Component {
 			// metalness: 0.6,
 			opacity: 0.9,
 			transparent: true
-		});
-		
+		})
+
 		var pgeometry = new THREE.PlaneGeometry(60, 60)
 		var pelement = new THREE.Mesh(pgeometry, pmaterial)
 		pelement.rotation.x = -90 * Math.PI / 180
@@ -279,30 +282,30 @@ class App extends Component {
 		} = this.state
 
 		function onMouseMove(event) {
-			event.preventDefault();
-			mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-			mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-		};
+			event.preventDefault()
+			mouse.x = (event.clientX / window.innerWidth) * 2 - 1
+			mouse.y = -(event.clientY / window.innerHeight) * 2 + 1
+		}
 		function onDocumentTouchStart(event) {
 			if (event.touches.length == 1) {
-				event.preventDefault();
-				mouse.x = event.touches[0].pageX - window.innerWidth / 2;
-				mouse.y = event.touches[0].pageY - window.innerHeight / 2;
-			};
-		};
+				event.preventDefault()
+				mouse.x = event.touches[0].pageX - window.innerWidth / 2
+				mouse.y = event.touches[0].pageY - window.innerHeight / 2
+			}
+		}
 		function onDocumentTouchMove(event) {
 			if (event.touches.length == 1) {
-				event.preventDefault();
-				mouse.x = event.touches[0].pageX - window.innerWidth / 2;
-				mouse.y = event.touches[0].pageY - window.innerHeight / 2;
+				event.preventDefault()
+				mouse.x = event.touches[0].pageX - window.innerWidth / 2
+				mouse.y = event.touches[0].pageY - window.innerHeight / 2
 			}
 		}
 
 		function onMouseClick(event) {
-			event.preventDefault();
+			event.preventDefault()
 
-			mouse.x = (event.clientX / window.innerWidth) * 3 - 1;
-			mouse.y = -(event.clientY / window.innerHeight) * 3 + 1;
+			mouse.x = (event.clientX / window.innerWidth) * 3 - 1
+			mouse.y = -(event.clientY / window.innerHeight) * 3 + 1
 		}
 
 		// window.addEventListener('mousemove', onMouseMove, false)
@@ -315,7 +318,7 @@ class App extends Component {
 		const { city } = this.state
 		let {	createCarPos } = this.state
 		var cMat = new THREE.MeshToonMaterial({ color: cColor, side: THREE.DoubleSide })
-		var cGeo = new THREE.CubeGeometry(1, cScale / 40, cScale / 40)
+		var cGeo = new THREE.BoxGeometry(1, cScale / 40, cScale / 40)
 		var cElem = new THREE.Mesh(cGeo, cMat)
 		var cAmp = 3
 
@@ -326,13 +329,13 @@ class App extends Component {
 
 			TweenMax.to(cElem.position, 3, { x: cPos, repeat: -1, yoyo: true, delay: this.mathRandom(3) })
 		} else {
-			createCarPos = true;
+			createCarPos = true
 			cElem.position.x = (this.mathRandom(cAmp))
 			cElem.position.z = -cPos
 			cElem.rotation.y = 90 * Math.PI / 180
 
 			TweenMax.to(cElem.position, 5, { z: cPos, repeat: -1, yoyo: true, delay: this.mathRandom(3), ease: Power1.easeInOut })
-		};
+		}
 		cElem.receiveShadow = true
 		cElem.castShadow = true
 		cElem.position.y = Math.abs(this.mathRandom(5))
@@ -384,7 +387,7 @@ class App extends Component {
 		const cityRotationY = (Date.now() / 5000) * 13
 		city.rotation.y = cityRotationY * 0.025
 
-		// const time = Date.now() * 0.00005;
+		// const time = Date.now() * 0.00005
 
 		// for (let index = 0, length = town.children.length; index < length; index++) {
 		// 	const object = town.children[index]
