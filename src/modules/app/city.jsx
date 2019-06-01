@@ -1,3 +1,7 @@
+import { TweenMax, Power1, Power2 } from "gsap/TweenMax"
+
+const THREE = window.THREE
+
 // Three JS Template
 //----------------------------------------------------------------- BASIC parameters
 var renderer = new THREE.WebGLRenderer({antialias:true});
@@ -11,7 +15,6 @@ if (window.innerWidth > 800) {
   //console.log(window.innerWidth);
 };
 //---
-
 document.body.appendChild( renderer.domElement );
 
 window.addEventListener('resize', onWindowResize, false);
@@ -227,7 +230,7 @@ var createCars = function(cScale = 2, cPos = 20, cColor = 0xFFFF00) {
     cElem.position.z = -cPos;
     cElem.rotation.y = 90 * Math.PI / 180;
 
-    TweenMax.to(cElem.position, 5, {z:cPos, repeat:-1, yoyo:true, delay:mathRandom(3), ease:Power1.easeInOut});
+    TweenMax.to(cElem.position, 5, {z:cPos, repeat:-1, yoyo:true, delay:mathRandom(3), ease: Power1.easeInOut});
   };
   cElem.receiveShadow = true;
   cElem.castShadow = true;
