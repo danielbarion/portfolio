@@ -76,7 +76,12 @@ class App extends Component {
 	}
 
 	initializeCanvas() {
-		const renderer = new THREE.WebGLRenderer({ antialias: true })
+		const renderer = new THREE.WebGLRenderer({
+			antialias: true,
+			powerPreference: 'high-performance',
+			alpha: true,
+			depth: true,
+		})
 		renderer.setSize(window.innerWidth, window.innerHeight)
 		renderer.domElement.id = "city"
 
@@ -153,7 +158,7 @@ class App extends Component {
 		const segments = 1
 
 		for (let i = 1; i < buildings; i++) {
-			const geometry = new THREE.BoxGeometry(1, 0, 0, segments, segments, segments)
+			const geometry = new THREE.BoxBufferGeometry(1, 0, 0, segments, segments, segments)
 			const material = new THREE.MeshStandardMaterial({
 				color: this.setTintColor(),
 				wireframe: false,
@@ -212,7 +217,7 @@ class App extends Component {
 
 		// Particles
 		const gmaterial = new THREE.MeshToonMaterial({ color: 0xFFFFFF, side: THREE.DoubleSide })
-		const gparticular = new THREE.CircleGeometry(0.01, 3)
+		const gparticular = new THREE.CircleBufferGeometry(0.01, 3)
 		const aparticular = 5
 
 		for (let h = 1; h < particles; h++) {
@@ -371,13 +376,13 @@ class App extends Component {
 
 		requestAnimationFrame(this.animate)
 
-		const cityRotationX = Math.sin(Date.now() / 5000) * 13
+		const cityRotationX = Math.sin(performance.now() / 5000) * 15
 		city.rotation.x = cityRotationX * Math.PI / 180
 
-		const cityRotationY = (Date.now() / 5000) * 13
+		const cityRotationY = (performance.now() / 5000) * 15
 		city.rotation.y = cityRotationY * 0.025
 
-		// const time = Date.now() * 0.00005
+		// const time = performance.now() * 0.00005
 
 		// for (let index = 0, length = town.children.length; index < length; index++) {
 		// 	const object = town.children[index]
