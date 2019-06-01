@@ -371,16 +371,6 @@ class App extends Component {
 
 		requestAnimationFrame(this.animate)
 
-		city.rotation.y -= ((mouse.x * 8) - camera.rotation.y) * uSpeed
-		city.rotation.x -= (-(mouse.y * 2) - camera.rotation.x) * uSpeed
-
-		if (city.rotation.x < -0.05) {
-			city.rotation.x = -0.05
-		}
-		else if (city.rotation.x > 1) {
-			city.rotation.x = 1
-		}
-
 		const cityRotationX = Math.sin(Date.now() / 5000) * 13
 		city.rotation.x = cityRotationX * Math.PI / 180
 
