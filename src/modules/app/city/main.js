@@ -74,7 +74,7 @@ function init() {
       //transparent:true,
       //roughness: 0.3,
       //metalness: 1,
-      shading: THREE.SmoothShading,
+      flatShading: THREE.SmoothShading,
       //shading:THREE.FlatShading,
       side:THREE.DoubleSide});
     var wmaterial = new THREE.MeshLambertMaterial({
@@ -131,8 +131,8 @@ function init() {
   var pmaterial = new THREE.MeshPhongMaterial({
     color:0x000000,
     side:THREE.DoubleSide,
-    roughness: 10,
-    metalness: 0.6,
+    // roughness: 10,
+    // metalness: 0.6,
     opacity:0.9,
     transparent:true});
   var pgeometry = new THREE.PlaneGeometry(60,60);
@@ -169,9 +169,9 @@ function onDocumentTouchMove( event ) {
     mouse.y = event.touches[ 0 ].pageY - window.innerHeight / 2;
   }
 }
-window.addEventListener('mousemove', onMouseMove, false);
-window.addEventListener('touchstart', onDocumentTouchStart, false );
-window.addEventListener('touchmove', onDocumentTouchMove, false );
+// window.addEventListener('mousemove', onMouseMove, false);
+// window.addEventListener('touchstart', onDocumentTouchStart, false );
+// window.addEventListener('touchmove', onDocumentTouchMove, false );
 
 //----------------------------------------------------------------- Lights
 var ambientLight = new THREE.AmbientLight(0xFFFFFF, 4);
