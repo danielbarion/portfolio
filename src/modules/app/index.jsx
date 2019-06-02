@@ -13,7 +13,7 @@ class App extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			buildings: 30,
+			buildings: 60,
 			particles: 3000,
 			renderer: null,
 			cityElem: null,
@@ -68,8 +68,7 @@ class App extends Component {
 			this.initializeCity(),
 			this.initializeLights(),
 			this.mouseFunctions(),
-			this.generateLines(),
-			this.initializeCity()
+			this.generateLines()
 			// this.gridHelper()
 		), 300)
 		setTimeout(() => this.animate(), 600)
