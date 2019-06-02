@@ -13,7 +13,7 @@ class App extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			buildings: 100,
+			buildings: 200,
 			particles: 3000,
 			renderer: null,
 			cityElem: null,
