@@ -13,7 +13,7 @@ class App extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			buildings: 60,
+			buildings: 100,
 			particles: 3000,
 			renderer: null,
 			cityElem: null,
@@ -192,7 +192,7 @@ class App extends Component {
 
 			// floor.scale.x = floor.scale.z = 1+this.mathRandom(0.33)
 			floor.scale.y = 0.05 //+this.mathRandom(0.5)
-			cube.scale.y = 0.1 + Math.abs(this.mathRandom(8))
+			cube.scale.y = 0.1 + Math.abs(this.mathRandom(8)) / 2
 			// cube.scale.y = 0.1 + Math.abs(this.mathRandom(8))
 
 			// TweenMax.to(cube.scale, 1, {y:cube.rotationValue, repeat:-1, yoyo:true, delay:i*0.005, ease:Power1.easeInOut})
@@ -202,8 +202,9 @@ class App extends Component {
 			TweenMax.to(cube.position, 4, {y:cube.setScale / 2, ease:Elastic.easeInOut, delay:0.2*i, yoyo:true, repeat:-1}) */
 
 			var cubeWidth = 0.9
-			cube.scale.x = cube.scale.z = cubeWidth + this.mathRandom(1 - cubeWidth)
-			// cube.position.y = cube.scale.y / 2
+			cube.scale.z = cubeWidth + this.mathRandom(1 - cubeWidth)
+			cube.scale.x = cube.scale.z
+			cube.position.y = cube.scale.y / 2
 			cube.position.x = Math.round(this.mathRandom())
 			cube.position.z = Math.round(this.mathRandom())
 
