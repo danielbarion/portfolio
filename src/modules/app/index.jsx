@@ -201,7 +201,7 @@ class App extends Component {
 			TweenMax.to(cube.scale, 4, {y:cube.setScale, ease:Elastic.easeInOut, delay:0.2*i, yoyo:true, repeat:-1})
 			TweenMax.to(cube.position, 4, {y:cube.setScale / 2, ease:Elastic.easeInOut, delay:0.2*i, yoyo:true, repeat:-1}) */
 
-			var cubeWidth = 0.9
+			const cubeWidth = 0.9
 			cube.scale.z = cubeWidth + this.mathRandom(1 - cubeWidth)
 			cube.scale.x = cube.scale.z
 			cube.position.y = cube.scale.y / 2
@@ -376,11 +376,19 @@ class App extends Component {
 
 		requestAnimationFrame(this.animate)
 
-		const cityRotationX = Math.sin(performance.now() / 5000) * 15
-		city.rotation.x = cityRotationX * Math.PI / 180
+		const now = performance.now() / 5000
+		const cameraRotationX = Math.cos(now) * 20
+		const cameraRotationY = 12
+		const cameraRotationZ = Math.sin(now) * 20
+		camera.position.x = cameraRotationX
+		camera.position.y = cameraRotationY
+		camera.position.z = cameraRotationZ
 
-		const cityRotationY = (performance.now() / 5000) * 15
-		city.rotation.y = cityRotationY * 0.025
+		// const cameraRotationY = Math.sin(performance.now() / 5000) * 15
+		// camera.position.y = cameraRotationY * 0.025
+		// camera.position.z = radius * Math.cos(THREE.Math.degToRad(theta));
+		// camera.updateMatrixWorld();
+
 
 		// const time = performance.now() * 0.00005
 
