@@ -376,7 +376,7 @@ class App extends Component {
 
 		requestAnimationFrame(this.animate)
 
-		const now = performance.now() / 5000
+		const now = performance.now() / 10000
 		const cameraRotationX = Math.cos(now) * 20
 		const cameraRotationY = 12
 		const cameraRotationZ = Math.sin(now) * 20
