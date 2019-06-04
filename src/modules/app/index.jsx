@@ -384,12 +384,6 @@ class App extends Component {
 		camera.position.y = cameraRotationY
 		camera.position.z = cameraRotationZ
 
-		// const cameraRotationY = Math.sin(performance.now() / 5000) * 15
-		// camera.position.y = cameraRotationY * 0.025
-		// camera.position.z = radius * Math.cos(THREE.Math.degToRad(theta));
-		// camera.updateMatrixWorld();
-
-
 		// const time = performance.now() * 0.00005
 
 		// for (let index = 0, length = town.children.length; index < length; index++) {
