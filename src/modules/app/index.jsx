@@ -186,8 +186,11 @@ class App extends Component {
 			// const wfloor = new THREE.Mesh(geometry, wmaterial)
 
 			// cube.add(wfloor)
-			cube.castShadow = true
-			cube.receiveShadow = true
+
+			// Disable shadows to improve fps...
+			cube.castShadow = false
+			cube.receiveShadow = false
+
 			cube.rotationValue = 0.1 + Math.abs(this.mathRandom(8))
 
 			// floor.scale.x = floor.scale.z = 1+this.mathRandom(0.33)
@@ -227,7 +230,7 @@ class App extends Component {
 			smoke.add(particular)
 		}
 
-		var pmaterial = new THREE.MeshPhongMaterial({
+		const pmaterial = new THREE.MeshPhongMaterial({
 			color: 0x000000,
 			side: THREE.DoubleSide,
 			// roughness: 10,
@@ -236,11 +239,11 @@ class App extends Component {
 			transparent: true
 		})
 
-		var pgeometry = new THREE.PlaneGeometry(60, 60)
-		var pelement = new THREE.Mesh(pgeometry, pmaterial)
+		const pgeometry = new THREE.PlaneGeometry(60, 60)
+		const pelement = new THREE.Mesh(pgeometry, pmaterial)
 		pelement.rotation.x = -90 * Math.PI / 180
 		pelement.position.y = -0.001
-		pelement.receiveShadow = true
+		pelement.receiveShadow = false // disable shadow
 		//pelement.material.emissive.setHex(0xFFFFFF + Math.random() * 100000)
 
 		city.add(pelement)
@@ -322,10 +325,10 @@ class App extends Component {
 	createLine(cScale = 2, cPos = 20, cColor = 0xFFFF00) {
 		const { city } = this.state
 		let {	createCarPos } = this.state
-		var cMat = new THREE.MeshToonMaterial({ color: cColor, side: THREE.DoubleSide })
-		var cGeo = new THREE.BoxGeometry(1, cScale / 40, cScale / 40)
-		var cElem = new THREE.Mesh(cGeo, cMat)
-		var cAmp = 3
+		const cMat = new THREE.MeshToonMaterial({ color: cColor, side: THREE.DoubleSide })
+		const cGeo = new THREE.BoxGeometry(1, cScale / 40, cScale / 40)
+		const cElem = new THREE.Mesh(cGeo, cMat)
+		const cAmp = 3
 
 		if (createCarPos) {
 			createCarPos = false
@@ -352,7 +355,7 @@ class App extends Component {
 	}
 
 	generateLines() {
-		// for (var i = 0; i < 60; i++) {
+		// for (let i = 0; i < 60; i++) {
 		// 	this.createLine(0.1, 20)
 		// }
 	}
@@ -374,6 +377,9 @@ class App extends Component {
 			town
 		} = this.state
 
+		// "limit" fps to 30 by second
+		// setTimeout(() => requestAnimationFrame(this.animate), 1000 / 30)
+
 		requestAnimationFrame(this.animate)
 
 		const now = performance.now() / 10000
@@ -384,13 +390,13 @@ class App extends Component {
 		camera.position.y = cameraRotationY
 		camera.position.z = cameraRotationZ
 
-		// const time = performance.now() * 0.00005
+		// const time = performance.now() * 0.000005
 
 		// for (let index = 0, length = town.children.length; index < length; index++) {
-		// 	const object = town.children[index]
-		// 	// object.scale.y = Math.sin(time*50) * object.rotationValue
-		// 	// object.rotation.y = (Math.sin((time/object.rotationValue) * Math.PI / 180) * 180)
-		// 	// object.rotation.z = (Math.cos((time/object.rotationValue) * Math.PI / 180) * 180)
+			// const object = town.children[index]
+			// object.scale.y = Math.sin(time*50) * object.rotationValue
+			// object.rotation.y = (Math.sin((time/object.rotationValue) * Math.PI / 180) * 180)
+			// object.rotation.z = (Math.cos((time/object.rotationValue) * Math.PI / 180) * 180)
 		// }
 
 		smoke.rotation.y += 0.01
