@@ -101,9 +101,6 @@ class App extends Component {
 	initializeCamera() {
 		const camera = new THREE.PerspectiveCamera(20, window.innerWidth / window.innerHeight, 1, 500)
 
-		// very close
-		// camera.position.set(0, 2, 14)
-		// little far
 		camera.position.set(0, 6, 16)
 
 		this.setState({ camera })
@@ -114,8 +111,6 @@ class App extends Component {
 
 		scene.background = new THREE.Color(setColor)
 		scene.fog = new THREE.Fog(setColor, 6, 30)
-		// scene.fog = new THREE.Fog(setColor, 10, 16)
-		// scene.fog = new THREE.FogExp2(setColor, 0.05)
 
 		this.setState({ scene })
 	}
@@ -162,31 +157,14 @@ class App extends Component {
 			const material = new THREE.MeshStandardMaterial({
 				color: this.setTintColor(),
 				wireframe: false,
-				//opacity:0.9,
-				//transparent:true,
 				roughness: 0.3,
-				// metalness: 1,
 				flatShading: THREE.SmoothShading,
-				// flatShading: THREE.FlatShading,
 				side: THREE.DoubleSide
 			})
 
-			// const wmaterial = new THREE.MeshLambertMaterial({
-			// 	// color: 0xFFFFFF,
-			// 	color: 0x000000,
-			// 	wireframe: true,
-			// 	transparent: true,
-			// 	opacity: 0.03,
-			// 	side: THREE.DoubleSide,
-			// 	// shading:THREE.FlatShading
-			// })
 
 			const cube = new THREE.Mesh(geometry, material)
-			// const wire = new THREE.Mesh(geometry, wmaterial)
 			const floor = new THREE.Mesh(geometry, material)
-			// const wfloor = new THREE.Mesh(geometry, wmaterial)
-
-			// cube.add(wfloor)
 
 			// Disable shadows to improve fps...
 			cube.castShadow = false
@@ -194,16 +172,8 @@ class App extends Component {
 
 			cube.rotationValue = 0.1 + Math.abs(this.mathRandom(8))
 
-			// floor.scale.x = floor.scale.z = 1+this.mathRandom(0.33)
-			floor.scale.y = 0.05 //+this.mathRandom(0.5)
+			floor.scale.y = 0.05 
 			cube.scale.y = 0.1 + Math.abs(this.mathRandom(8)) / 2
-			// cube.scale.y = 0.1 + Math.abs(this.mathRandom(8))
-
-			// TweenMax.to(cube.scale, 1, {y:cube.rotationValue, repeat:-1, yoyo:true, delay:i*0.005, ease:Power1.easeInOut})
-			/* cube.setScale = 0.1+Math.abs(this.mathRandom())
-
-			TweenMax.to(cube.scale, 4, {y:cube.setScale, ease:Elastic.easeInOut, delay:0.2*i, yoyo:true, repeat:-1})
-			TweenMax.to(cube.position, 4, {y:cube.setScale / 2, ease:Elastic.easeInOut, delay:0.2*i, yoyo:true, repeat:-1}) */
 
 			const cubeWidth = 0.9
 			cube.scale.z = cubeWidth + this.mathRandom(1 - cubeWidth)
@@ -212,8 +182,7 @@ class App extends Component {
 			cube.position.x = Math.round(this.mathRandom())
 			cube.position.z = Math.round(this.mathRandom())
 
-			floor.position.set(cube.position.x, 0/*floor.scale.y / 2*/, cube.position.z)
-			// floor.position.set(cube.position.x, floor.scale.y / 2, cube.position.z)
+			floor.position.set(cube.position.x, 0, cube.position.z)
 
 			town.add(floor)
 			town.add(cube)
@@ -234,8 +203,6 @@ class App extends Component {
 		const pmaterial = new THREE.MeshPhongMaterial({
 			color: 0x000000,
 			side: THREE.DoubleSide,
-			// roughness: 10,
-			// metalness: 0.6,
 			opacity: 0.9,
 			transparent: true
 		})
@@ -245,7 +212,6 @@ class App extends Component {
 		pelement.rotation.x = -90 * Math.PI / 180
 		pelement.position.y = -0.001
 		pelement.receiveShadow = false // disable shadow
-		//pelement.material.emissive.setHex(0xFFFFFF + Math.random() * 100000)
 
 		city.add(pelement)
 	}
@@ -361,7 +327,6 @@ class App extends Component {
 
 	setCamera() {
 		this.createLine(0.1, 20, 0xFFFFFF)
-		// TweenMax.to(camera.position, 1, {y:1+Math.random()*4, ease:Expo.easeInOut})
 	}
 
 	animate() {
@@ -385,15 +350,6 @@ class App extends Component {
 		camera.position.x = cameraRotationX
 		camera.position.y = cameraRotationY
 		camera.position.z = cameraRotationZ
-
-		// const time = performance.now() * 0.000005
-
-		// for (let index = 0, length = town.children.length; index < length; index++) {
-			// const object = town.children[index]
-			// object.scale.y = Math.sin(time*50) * object.rotationValue
-			// object.rotation.y = (Math.sin((time/object.rotationValue) * Math.PI / 180) * 180)
-			// object.rotation.z = (Math.cos((time/object.rotationValue) * Math.PI / 180) * 180)
-		// }
 
 		// Snow Fall
 		smoke.children.forEach(snow => {
