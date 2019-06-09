@@ -18,6 +18,7 @@ class App extends Component {
 			renderer: null,
 			cityElem: null,
 			camera: null,
+			controls: null,
 			createCarPos: true,
 			uSpeed: 0.001,
 			// Fog Background
@@ -61,20 +62,22 @@ class App extends Component {
 	/**
 	 * funcs
 	 */
-	start() {
-		this.initializeCanvas()
-		setTimeout(() => (
-			this.initializeFogBackground(),
-			this.initializeCity(),
-			this.initializeLights(),
-			this.mouseFunctions(),
-			this.generateLines()
-			// this.gridHelper()
-		), 300)
-		setTimeout(() => this.animate(), 600)
+	async start() {
+		new Promise((resolve, reject) => this.initializeCanvas(resolve, reject))
+		// .then((resolve, reject) => this.initializeCamera(resolve, reject))
+		// .then((resolve, reject) => this.initializeFogBackground(resolve, reject))
+		// .then((resolve, reject) => this.initializeCity(resolve, reject))
+		// .then((resolve, reject) => this.initializeLights(resolve, reject))
+		// .then((resolve, reject) => this.mouseFunctions(resolve, reject))
+		// .then((resolve, reject) => this.generateLines(resolve, reject))
+		// .then(() => {
+		// 	this.gridHelper()
+		// })
+		// .then(() => this.animate())
+
 	}
 
-	initializeCanvas() {
+	initializeCanvas(resolve) {
 		const renderer = new THREE.WebGLRenderer({
 			antialias: true,
 			powerPreference: 'high-performance',
@@ -95,24 +98,25 @@ class App extends Component {
 		const cityElem = document.querySelector('.app-city')
 		cityElem.appendChild(renderer.domElement)
 
-		this.setState({ renderer, cityElem }, () => this.initializeCamera())
+		this.setState({ renderer, cityElem }, () => resolve())
 	}
 
-	initializeCamera() {
+	initializeCamera(resolve) {
+		const { renderer } = this.state
 		const camera = new THREE.PerspectiveCamera(20, window.innerWidth / window.innerHeight, 1, 500)
 
 		camera.position.set(0, 6, 16)
 
-		this.setState({ camera })
+		this.setState({ camera }, () => resolve())
 	}
 
-	initializeFogBackground() {
+	initializeFogBackground(resolve) {
 		const { scene, setColor } = this.state
 
 		scene.background = new THREE.Color(setColor)
 		scene.fog = new THREE.Fog(setColor, 6, 30)
 
-		this.setState({ scene })
+		this.setState({ scene }, () => resolve())
 	}
 
 	mathRandom(num = 8) {
@@ -139,7 +143,7 @@ class App extends Component {
 		this.setTintColor()
 	}
 
-	initializeCity() {
+	initializeCity(resolve) {
 		const {
 			town,
 			smoke,
@@ -149,6 +153,16 @@ class App extends Component {
 			buildings,
 			particles
 		} = this.state
+
+		const controls = THREE.OrbitControls(camera, renderer.domElement)
+
+		// controls.enableDamping = true
+		// controls.dampingFactor = 0.25
+		// controls.screenSpacePanning = false
+		// controls.minDistance = 100
+		// controls.maxDistance = 500
+		// controls.maxPolarAngle = Math.PI / 2
+		// controls.update()
 
 		const segments = 1
 
@@ -172,7 +186,7 @@ class App extends Component {
 
 			cube.rotationValue = 0.1 + Math.abs(this.mathRandom(8))
 
-			floor.scale.y = 0.05 
+			floor.scale.y = 0.05
 			cube.scale.y = 0.1 + Math.abs(this.mathRandom(8)) / 2
 
 			const cubeWidth = 0.9
@@ -214,9 +228,21 @@ class App extends Component {
 		pelement.receiveShadow = false // disable shadow
 
 		city.add(pelement)
+
+
+		this.setState({
+			town,
+			smoke,
+			city,
+			camera,
+			renderer,
+			buildings,
+			particles,
+			controls
+		}, () => resolve())
 	}
 
-	initializeLights() {
+	initializeLights(resolve) {
 		const {
 			smoke,
 			city,
@@ -248,9 +274,11 @@ class App extends Component {
 		scene.add(city)
 		city.add(smoke)
 		city.add(town)
+
+		resolve()
 	}
 
-	mouseFunctions() {
+	mouseFunctions(resolve) {
 		const {
 			raycaster,
 			mouse
@@ -287,6 +315,8 @@ class App extends Component {
 		// window.addEventListener('touchstart', onDocumentTouchStart, false )
 		// window.addEventListener('touchmove', onDocumentTouchMove, false )
 		// window.addEventListener('click', onMouseClick, false )
+
+		resolve()
 	}
 
 	createLine(cScale = 2, cPos = 20, cColor = 0xFFFF00) {
@@ -319,10 +349,12 @@ class App extends Component {
 
 	initializeLines() {}
 
-	generateLines() {
+	generateLines(resolve) {
 		// for (let i = 0; i < 60; i++) {
 		// 	this.createLine(0.1, 20)
 		// }
+
+		resolve()
 	}
 
 	setCamera() {
@@ -338,7 +370,8 @@ class App extends Component {
 			scene,
 			mouse,
 			uSpeed,
-			town
+			town,
+			controls
 		} = this.state
 
 		requestAnimationFrame(this.animate)
@@ -347,9 +380,9 @@ class App extends Component {
 		const cameraRotationX = Math.cos(now) * 20
 		const cameraRotationY = 12
 		const cameraRotationZ = Math.sin(now) * 20
-		camera.position.x = cameraRotationX
-		camera.position.y = cameraRotationY
-		camera.position.z = cameraRotationZ
+		// camera.position.x = cameraRotationX
+		// camera.position.y = cameraRotationY
+		// camera.position.z = cameraRotationZ
 
 		// Snow Fall
 		smoke.children.forEach(snow => {
@@ -362,6 +395,7 @@ class App extends Component {
 
 		camera.lookAt(city.position)
 		renderer.render(scene, camera)
+		controls.update()
 	}
 
 	/**
