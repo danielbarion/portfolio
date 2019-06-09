@@ -14,7 +14,7 @@ class App extends Component {
 		super(props)
 		this.state = {
 			buildings: 200,
-			particles: 3000,
+			particles: 1500,
 			renderer: null,
 			cityElem: null,
 			camera: null,
@@ -221,8 +221,8 @@ class App extends Component {
 
 		// Particles
 		const gmaterial = new THREE.MeshToonMaterial({ color: 0xFFFFFF, side: THREE.DoubleSide })
-		const gparticular = new THREE.CircleBufferGeometry(0.01, 3)
-		const aparticular = 5
+		const gparticular = new THREE.SphereBufferGeometry(0.01, 32, 32)
+		const aparticular = 10
 
 		for (let h = 1; h < particles; h++) {
 			const particular = new THREE.Mesh(gparticular, gmaterial)
@@ -351,9 +351,7 @@ class App extends Component {
 		city.add(cElem)
 	}
 
-	initializeLines() {
-
-	}
+	initializeLines() {}
 
 	generateLines() {
 		// for (let i = 0; i < 60; i++) {
@@ -378,9 +376,6 @@ class App extends Component {
 			town
 		} = this.state
 
-		// "limit" fps to 30 by second
-		// setTimeout(() => requestAnimationFrame(this.animate), 1000 / 30)
-
 		requestAnimationFrame(this.animate)
 
 		const now = performance.now() / 10000
@@ -400,8 +395,14 @@ class App extends Component {
 			// object.rotation.z = (Math.cos((time/object.rotationValue) * Math.PI / 180) * 180)
 		// }
 
-		smoke.rotation.y += 0.01
-		smoke.rotation.x += 0.01
+		// Snow Fall
+		smoke.children.forEach(snow => {
+			if (snow.position.y < -2.5) {
+				snow.position.y = 5
+			} else {
+				snow.position.y -= 0.03
+			}
+		})
 
 		camera.lookAt(city.position)
 		renderer.render(scene, camera)
