@@ -85,10 +85,11 @@ class App extends Component {
 		renderer.domElement.id = "city"
 
 		if (window.innerWidth > 800) {
-			renderer.shadowMap.enabled = true
-			renderer.shadowMap.type = THREE.PCFSoftShadowMap
-			renderer.shadowMap.needsUpdate = true
-			renderer.toneMapping = THREE.ReinhardToneMapping
+			//disable shadow map and tonemapping to improve fps
+			// renderer.shadowMap.enabled = true
+			// renderer.shadowMap.type = THREE.PCFSoftShadowMap
+			// renderer.shadowMap.needsUpdate = true
+			// renderer.toneMapping = THREE.ReinhardToneMapping
 		}
 
 		const cityElem = document.querySelector('.app-city')
