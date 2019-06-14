@@ -62,19 +62,18 @@ class App extends Component {
 	/**
 	 * funcs
 	 */
-	async start() {
-		new Promise((resolve, reject) => this.initializeCanvas(resolve, reject))
-		// .then((resolve, reject) => this.initializeCamera(resolve, reject))
-		// .then((resolve, reject) => this.initializeFogBackground(resolve, reject))
-		// .then((resolve, reject) => this.initializeCity(resolve, reject))
-		// .then((resolve, reject) => this.initializeLights(resolve, reject))
-		// .then((resolve, reject) => this.mouseFunctions(resolve, reject))
-		// .then((resolve, reject) => this.generateLines(resolve, reject))
+	start() {
+		new Promise(resolve => this.initializeCanvas(resolve))
+		.then(() => this.initializeCamera())
+		.then(() => this.initializeFogBackground())
+		.then(() => this.initializeCity())
+		.then(() => this.initializeLights())
+		.then(() => this.mouseFunctions())
+		.then(() => this.generateLines())
 		// .then(() => {
 		// 	this.gridHelper()
 		// })
-		// .then(() => this.animate())
-
+		.then(() => this.animate())
 	}
 
 	initializeCanvas(resolve) {
@@ -101,22 +100,22 @@ class App extends Component {
 		this.setState({ renderer, cityElem }, () => resolve())
 	}
 
-	initializeCamera(resolve) {
+	initializeCamera() {
 		const { renderer } = this.state
 		const camera = new THREE.PerspectiveCamera(20, window.innerWidth / window.innerHeight, 1, 500)
 
 		camera.position.set(0, 6, 16)
 
-		this.setState({ camera }, () => resolve())
+		this.setState({ camera })
 	}
 
-	initializeFogBackground(resolve) {
+	initializeFogBackground() {
 		const { scene, setColor } = this.state
 
 		scene.background = new THREE.Color(setColor)
 		scene.fog = new THREE.Fog(setColor, 6, 30)
 
-		this.setState({ scene }, () => resolve())
+		this.setState({ scene })
 	}
 
 	mathRandom(num = 8) {
@@ -143,7 +142,7 @@ class App extends Component {
 		this.setTintColor()
 	}
 
-	initializeCity(resolve) {
+	initializeCity() {
 		const {
 			town,
 			smoke,
@@ -153,16 +152,6 @@ class App extends Component {
 			buildings,
 			particles
 		} = this.state
-
-		const controls = THREE.OrbitControls(camera, renderer.domElement)
-
-		// controls.enableDamping = true
-		// controls.dampingFactor = 0.25
-		// controls.screenSpacePanning = false
-		// controls.minDistance = 100
-		// controls.maxDistance = 500
-		// controls.maxPolarAngle = Math.PI / 2
-		// controls.update()
 
 		const segments = 1
 
@@ -237,12 +226,11 @@ class App extends Component {
 			camera,
 			renderer,
 			buildings,
-			particles,
-			controls
-		}, () => resolve())
+			particles
+		})
 	}
 
-	initializeLights(resolve) {
+	initializeLights() {
 		const {
 			smoke,
 			city,
@@ -274,14 +262,14 @@ class App extends Component {
 		scene.add(city)
 		city.add(smoke)
 		city.add(town)
-
-		resolve()
 	}
 
-	mouseFunctions(resolve) {
+	mouseFunctions() {
 		const {
 			raycaster,
-			mouse
+			mouse,
+			camera,
+			renderer
 		} = this.state
 
 		function onMouseMove(event) {
@@ -311,12 +299,22 @@ class App extends Component {
 			mouse.y = -(event.clientY / window.innerHeight) * 3 + 1
 		}
 
+		const controls = THREE.OrbitControls(camera, renderer.domElement)
+
+		// controls.enableDamping = true
+		// controls.dampingFactor = 0.25
+		// controls.screenSpacePanning = false
+		// controls.minDistance = 100
+		// controls.maxDistance = 500
+		// controls.maxPolarAngle = Math.PI / 2
+		// controls.update()
+
+		this.setState({ controls })
+
 		// window.addEventListener('mousemove', onMouseMove, false)
 		// window.addEventListener('touchstart', onDocumentTouchStart, false )
 		// window.addEventListener('touchmove', onDocumentTouchMove, false )
 		// window.addEventListener('click', onMouseClick, false )
-
-		resolve()
 	}
 
 	createLine(cScale = 2, cPos = 20, cColor = 0xFFFF00) {
@@ -349,12 +347,10 @@ class App extends Component {
 
 	initializeLines() {}
 
-	generateLines(resolve) {
+	generateLines() {
 		// for (let i = 0; i < 60; i++) {
 		// 	this.createLine(0.1, 20)
 		// }
-
-		resolve()
 	}
 
 	setCamera() {
@@ -377,12 +373,17 @@ class App extends Component {
 		requestAnimationFrame(this.animate)
 
 		const now = performance.now() / 10000
-		const cameraRotationX = Math.cos(now) * 20
-		const cameraRotationY = 12
-		const cameraRotationZ = Math.sin(now) * 20
+
+		// const cameraRotationX = Math.cos(now) * 20
+		// const cameraRotationZ = Math.sin(now) * 20
+		// const cameraRotationY = 12
+
 		// camera.position.x = cameraRotationX
-		// camera.position.y = cameraRotationY
 		// camera.position.z = cameraRotationZ
+
+		// if (camera.position.y !== 12) {
+		// 	camera.position.y = cameraRotationY
+		// }
 
 		// Snow Fall
 		smoke.children.forEach(snow => {
@@ -395,7 +396,7 @@ class App extends Component {
 
 		camera.lookAt(city.position)
 		renderer.render(scene, camera)
-		controls.update()
+		// controls.update()
 	}
 
 	/**
