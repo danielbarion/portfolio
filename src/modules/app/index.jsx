@@ -272,19 +272,19 @@ class App extends Component {
 			renderer
 		} = this.state
 
-		function onMouseMove(event) {
+		const onMouseMove = (event) => {
 			event.preventDefault()
 			mouse.x = (event.clientX / window.innerWidth) * 2 - 1
 			mouse.y = -(event.clientY / window.innerHeight) * 2 + 1
 		}
-		function onDocumentTouchStart(event) {
+		const onDocumentTouchStart = (event) => {
 			if (event.touches.length == 1) {
 				event.preventDefault()
 				mouse.x = event.touches[0].pageX - window.innerWidth / 2
 				mouse.y = event.touches[0].pageY - window.innerHeight / 2
 			}
 		}
-		function onDocumentTouchMove(event) {
+		const onDocumentTouchMove = (event) => {
 			if (event.touches.length == 1) {
 				event.preventDefault()
 				mouse.x = event.touches[0].pageX - window.innerWidth / 2
@@ -292,12 +292,13 @@ class App extends Component {
 			}
 		}
 
-		function onMouseClick(event) {
+		const onMouseClick = (event) => {
 			event.preventDefault()
 
 			mouse.x = (event.clientX / window.innerWidth) * 3 - 1
 			mouse.y = -(event.clientY / window.innerHeight) * 3 + 1
 		}
+
 
 		const controls = THREE.OrbitControls(camera, renderer.domElement)
 
@@ -374,16 +375,16 @@ class App extends Component {
 
 		const now = performance.now() / 10000
 
-		// const cameraRotationX = Math.cos(now) * 20
-		// const cameraRotationZ = Math.sin(now) * 20
-		// const cameraRotationY = 12
+		const cameraRotationX = Math.cos(now) * 20
+		const cameraRotationZ = Math.sin(now) * 20
+		const cameraRotationY = 12
 
-		// camera.position.x = cameraRotationX
-		// camera.position.z = cameraRotationZ
+		camera.position.x = cameraRotationX
+		camera.position.z = cameraRotationZ
 
-		// if (camera.position.y !== 12) {
-		// 	camera.position.y = cameraRotationY
-		// }
+		if (camera.position.y !== 12) {
+			camera.position.y = cameraRotationY
+		}
 
 		// Snow Fall
 		smoke.children.forEach(snow => {
