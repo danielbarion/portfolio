@@ -13,10 +13,16 @@ class App extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
+			canRotate: true,
 			buildings: 200,
 			particles: 1500,
 			renderer: null,
 			cityElem: null,
+			initialCameraPositions: {
+				x: Math.cos(performance.now() / 10000) * 20,
+				y: 12,
+				z: Math.sin(performance.now() / 10000) * 20,
+			},
 			camera: null,
 			controls: null,
 			createCarPos: true,
@@ -101,10 +107,13 @@ class App extends Component {
 	}
 
 	initializeCamera() {
-		const { renderer } = this.state
+		const { initialCameraPositions } = this.state
 		const camera = new THREE.PerspectiveCamera(20, window.innerWidth / window.innerHeight, 1, 500)
 
 		camera.position.set(0, 6, 16)
+		camera.position.x = initialCameraPositions.x
+		camera.position.y = initialCameraPositions.y
+		camera.position.z = initialCameraPositions.z
 
 		this.setState({ camera })
 	}
@@ -218,7 +227,6 @@ class App extends Component {
 
 		city.add(pelement)
 
-
 		this.setState({
 			town,
 			smoke,
@@ -277,19 +285,31 @@ class App extends Component {
 			mouse.x = (event.clientX / window.innerWidth) * 2 - 1
 			mouse.y = -(event.clientY / window.innerHeight) * 2 + 1
 		}
+
 		const onDocumentTouchStart = (event) => {
 			if (event.touches.length == 1) {
 				event.preventDefault()
-				mouse.x = event.touches[0].pageX - window.innerWidth / 2
-				mouse.y = event.touches[0].pageY - window.innerHeight / 2
+				// mouse.x = event.touches[0].pageX - window.innerWidth / 2
+				// mouse.y = event.touches[0].pageY - window.innerHeight / 2
 			}
 		}
+
 		const onDocumentTouchMove = (event) => {
 			if (event.touches.length == 1) {
 				event.preventDefault()
-				mouse.x = event.touches[0].pageX - window.innerWidth / 2
-				mouse.y = event.touches[0].pageY - window.innerHeight / 2
+				// mouse.x = event.touches[0].pageX - window.innerWidth / 2
+				// mouse.y = event.touches[0].pageY - window.innerHeight / 2
 			}
+		}
+
+		const onMouseDown = (event) => {
+			event.preventDefault()
+			this.setState({ canRotate: false })
+		}
+
+		const onMouseUp = (event) => {
+			event.preventDefault()
+			this.setState({ canRotate: true })
 		}
 
 		const onMouseClick = (event) => {
@@ -300,22 +320,14 @@ class App extends Component {
 		}
 
 
-		const controls = THREE.OrbitControls(camera, renderer.domElement)
-
-		// controls.enableDamping = true
-		// controls.dampingFactor = 0.25
-		// controls.screenSpacePanning = false
-		// controls.minDistance = 100
-		// controls.maxDistance = 500
-		// controls.maxPolarAngle = Math.PI / 2
-		// controls.update()
-
-		this.setState({ controls })
+		THREE.OrbitControls(camera, renderer.domElement)
 
 		// window.addEventListener('mousemove', onMouseMove, false)
 		// window.addEventListener('touchstart', onDocumentTouchStart, false )
 		// window.addEventListener('touchmove', onDocumentTouchMove, false )
 		// window.addEventListener('click', onMouseClick, false )
+		renderer.domElement.addEventListener('mousedown', onMouseDown, false )
+		renderer.domElement.addEventListener('mouseup', onMouseUp, false )
 	}
 
 	createLine(cScale = 2, cPos = 20, cColor = 0xFFFF00) {
@@ -368,22 +380,25 @@ class App extends Component {
 			mouse,
 			uSpeed,
 			town,
-			controls
+			canRotate
 		} = this.state
 
 		requestAnimationFrame(this.animate)
 
-		const now = performance.now() / 10000
+		if (canRotate) {
+			const now = performance.now() / 10000
+			const cameraRotationX = Math.cos(now) * 20
+			const cameraRotationZ = Math.sin(now) * 20
+			const cameraRotationY = 12
 
-		const cameraRotationX = Math.cos(now) * 20
-		const cameraRotationZ = Math.sin(now) * 20
-		const cameraRotationY = 12
-
-		camera.position.x = cameraRotationX
-		camera.position.z = cameraRotationZ
-
-		if (camera.position.y !== 12) {
-			camera.position.y = cameraRotationY
+			if (camera.position.y !== 12) {
+				camera.position.x += (cameraRotationX - camera.position.x) * 0.005
+				camera.position.y += (cameraRotationY - camera.position.y) * 0.005
+				camera.position.z += (cameraRotationZ - camera.position.z) * 0.005
+			} else {
+				camera.position.x = cameraRotationX
+				camera.position.z = cameraRotationZ
+			}
 		}
 
 		// Snow Fall
@@ -397,7 +412,6 @@ class App extends Component {
 
 		camera.lookAt(city.position)
 		renderer.render(scene, camera)
-		// controls.update()
 	}
 
 	/**

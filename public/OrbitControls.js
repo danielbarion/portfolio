@@ -26,8 +26,10 @@ THREE.OrbitControls = function (object, domElement) {
   this.target = new THREE.Vector3();
 
   // How far you can dolly in and out ( PerspectiveCamera only )
-  this.minDistance = 0;
-  this.maxDistance = Infinity;
+  // this.minDistance = 0;
+  // this.maxDistance = Infinity;
+  this.minDistance = 18;
+  this.maxDistance = 25;
 
   // How far you can zoom in and out ( OrthographicCamera only )
   this.minZoom = 0;
@@ -36,7 +38,8 @@ THREE.OrbitControls = function (object, domElement) {
   // How far you can orbit vertically, upper and lower limits.
   // Range is 0 to Math.PI radians.
   this.minPolarAngle = 0; // radians
-  this.maxPolarAngle = Math.PI; // radians
+  // this.maxPolarAngle = Math.PI; // radians
+  this.maxPolarAngle = Math.PI / 2.2; // radians
 
   // How far you can orbit horizontally, upper and lower limits.
   // If set, must be a sub-interval of the interval [ - Math.PI, Math.PI ].
@@ -69,7 +72,7 @@ THREE.OrbitControls = function (object, domElement) {
   this.autoRotateSpeed = 2.0; // 30 seconds per round when fps is 60
 
   // Set to false to disable use of the keys
-  this.enableKeys = true;
+  this.enableKeys = false;
 
   // The four arrow keys
   this.keys = { LEFT: 37, UP: 38, RIGHT: 39, BOTTOM: 40 };
