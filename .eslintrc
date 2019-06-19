@@ -2,8 +2,6 @@
   "globals": {
     "TimelineLite": false,
     "TimelineMax": false,
-    "TweenLite": false,
-    "TweenMax": false,
     "Back": false,
     "Bounce": false,
     "Circ": false,
