@@ -13,6 +13,9 @@
 		width 100vw
 		overflow hidden
 
+		+breakpoint-inv(mobileL)
+			grid-template-columns 0px auto
+
 		&-text
 			display flex
 			justify-content center
@@ -84,3 +87,29 @@
 				background url('../../assets/svg/top.svg')
 				background-repeat no-repeat
 				background-size contain
+
+				// +breakpoint-inv(mobileL)
+				// 	background url('../../assets/svg/right.svg')
+				// 	min-width 300px
+				// 	max-width 375px
+
+			// &::before
+			// 	content ''
+			// 	display none
+			// 	position absolute
+			// 	right 0
+			// 	top 0
+			// 	min-height 232px
+			// 	max-height 100%
+			// 	min-width 632px
+			// 	height 100%
+			// 	max-width 1024px
+			// 	background none
+
+			// 	+breakpoint-inv(mobileL)
+			// 		display block
+			// 		background-repeat no-repeat
+			// 		background-size contain
+			// 		background url('../../assets/svg/left.svg')
+			// 		min-width 300px
+			// 		max-width 375px
