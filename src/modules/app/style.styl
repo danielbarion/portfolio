@@ -3,9 +3,6 @@
 	width 100vw
 	background-color white
 
-	&-city
-		position absolute
-
 	&-header
 		display grid
 		grid-template-areas 'logo navigation'\
@@ -15,6 +12,16 @@
 		height 100vh
 		width 100vw
 		overflow hidden
+
+		&-text
+			display flex
+			justify-content center
+			align-items center
+			flex-direction row
+			color white
+			position absolute
+			height 100vh
+			width 100vw
 
 		&-logo
 			grid-area logo

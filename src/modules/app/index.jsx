@@ -55,8 +55,10 @@ class App extends Component {
 		 * classNames
 		 */
 		const _root = 'app'
-		const _city = `${_root}-city`
 		const _header = `${_root}-header`
+		const _headerText = `${_header}-text`
+		const _headerTitle = `${_headerText}-title`
+		const _headerDescription = `${_headerText}-description`
 		const _navigation = `${_header}-navigation`
 		const _logo = `${_header}-logo`
 		const _bottom = `${_header}-bottom`
@@ -74,13 +76,21 @@ class App extends Component {
 		const header = () => (
 			<div className={_header}>
 				{/* {logo()} */}
-				{/* {navigation()} */}
-				{/* {bottom()} */}
+				{headerText()}
+				{navigation()}
+				{bottom()}
 			</div>
 		)
 
-		const city = () => (
-			<div className={_city}></div>
+		const headerText = () => (
+			<div className={_headerText}>
+				<div className={_headerTitle}>
+					<h1>Lorem Ipsum</h1>
+				</div>
+				<div className={_headerDescription}>
+					<p>Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet .</p>
+				</div>
+			</div>
 		)
 
 		const logo = () => (
