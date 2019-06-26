@@ -39,6 +39,12 @@ class App extends Component {
 	/**
 	 * events
 	 */
+	startCityAnimation() {
+		window.dispatchEvent(new CustomEvent('startCityAnimation'))
+	}
+	stopCityAnimation() {
+		window.dispatchEvent(new CustomEvent('stopCityAnimation'))
+	}
 
 	/**
 	* React Render
@@ -111,8 +117,8 @@ class App extends Component {
 		const navigation = () => (
 			<div className={_navigation}>
 				<ul>
-					<li><a href="#header">Home</a></li>
-					<li><a href="#header">About</a></li>
+					<li><a href="#header" onClick={this.startCityAnimation}>Home</a></li>
+					<li><a href="#header" onClick={this.stopCityAnimation}>About</a></li>
 					<li><a href="#header">Projects</a></li>
 					<li><a href="#header">Contact</a></li>
 				</ul>

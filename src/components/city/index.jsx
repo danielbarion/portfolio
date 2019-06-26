@@ -10,6 +10,7 @@ class City extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
+			animationRunning: true,
 			canRotate: true,
 			buildings: 200,
 			particles: 1500,
@@ -52,6 +53,8 @@ class City extends Component {
 		this.mouseFunctions = this.mouseFunctions.bind(this)
 		this.onWindowResize = this.onWindowResize.bind(this)
 		this.animate = this.animate.bind(this)
+		this.startAnimation = this.startAnimation.bind(this)
+		this.stopAnimation = this.stopAnimation.bind(this)
 	}
 
 	/**
@@ -59,6 +62,8 @@ class City extends Component {
 	 */
 	componentDidMount() {
 		window.addEventListener('resize', this.onWindowResize, false)
+		window.addEventListener('startCityAnimation', this.startAnimation, false)
+		window.addEventListener('stopCityAnimation', this.stopAnimation, false)
 		this.start()
 	}
 
@@ -334,8 +339,11 @@ class City extends Component {
 			camera,
 			renderer,
 			scene,
-			canRotate
+			canRotate,
+			animationRunning
 		} = this.state
+
+		if (!animationRunning) return
 
 		requestAnimationFrame(this.animate)
 
@@ -375,6 +383,22 @@ class City extends Component {
 		const { city } = this.state
 		const gridHelper = new THREE.GridHelper(60, 120, 0xFF0000, 0x000000)
 		city.add(gridHelper)
+	}
+
+	startAnimation() {
+		const { animationRunning } = this.state
+
+		if (!animationRunning) {
+			this.setState({ animationRunning: true }, () => this.animate())
+		}
+	}
+
+	stopAnimation() {
+		const { animationRunning } = this.state
+
+		if (animationRunning) {
+			this.setState({ animationRunning: false })
+		}
 	}
 
 	/**
