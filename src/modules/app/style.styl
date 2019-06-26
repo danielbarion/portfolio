@@ -4,13 +4,6 @@
 	background-color white
 
 	&-header
-		display grid
-		grid-template-areas 'logo navigation'\
-												'bottom .'
-		grid-template-columns 288px auto
-		grid-template-rows auto 234px
-		height 100vh
-		width 100vw
 		overflow hidden
 
 		+breakpoint-inv(mobileL)
@@ -40,12 +33,13 @@
 			grid-area logo
 
 		&-bottom
-			grid-area bottom
+			position absolute
+			bottom 0
+			left 0
 
 		&-navigation
 			position relative
 			grid-area navigation
-			height 100%
 
 			& ul
 				position relative

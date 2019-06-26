@@ -69,12 +69,6 @@ class App extends Component {
 		const main = () => (
 			<div className={_root}>
 				<City />
-				{header()}
-			</div>
-		)
-
-		const header = () => (
-			<div className={_header}>
 				{/* {logo()} */}
 				{headerText()}
 				{navigation()}
