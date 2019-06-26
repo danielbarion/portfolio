@@ -20,12 +20,20 @@
 			top calc(50% - 40px)
 			pointer-events none
 
+			+breakpoint-inv(mobileL)
+				width 100vw
+				left calc(50% - 50vw)
+
 			&-title
 				color white
 
 			&-description
 				padding-top 1rem
 				max-width 600px
+
+				+breakpoint-inv(mobileL)
+					width 90vw
+					left calc(50% - 90vw)
 
 		&-logo
 			grid-area logo
@@ -93,7 +101,7 @@
 						+breakpoint-inv(mobileM)
 							padding-left 2.5px
 							padding-right 2.5px
-							padding-top 2.5px
+							padding-top 7px
 
 						&:hover
 							box-shadow inset 0 -2.5px 0 0 white
