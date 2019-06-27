@@ -7,6 +7,7 @@ import { ReactComponent as Top } from 'assets/svg/top.svg'
 import { ReactComponent as Logo } from 'assets/svg/logo.svg'
 import { ReactComponent as Bottom } from 'assets/svg/bottom.svg'
 import City from 'components/city'
+import Galaxy from 'components/galaxy'
 
 
 class App extends Component {
@@ -101,6 +102,7 @@ class App extends Component {
 		const main = () => (
 			<div className={_root}>
 				<City />
+				{/* <Galaxy /> */}
 				{transitionElement()}
 				{/* {logo()} */}
 				{headerText()}
