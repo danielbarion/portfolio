@@ -55,6 +55,8 @@ class City extends Component {
 		this.animate = this.animate.bind(this)
 		this.startAnimation = this.startAnimation.bind(this)
 		this.stopAnimation = this.stopAnimation.bind(this)
+		this.hideCity = this.hideCity.bind(this)
+		this.showCity = this.showCity.bind(this)
 	}
 
 	/**
@@ -124,7 +126,8 @@ class City extends Component {
 		const { scene, setColor } = this.state
 
 		scene.background = new THREE.Color(setColor)
-		scene.fog = new THREE.Fog(setColor, 6, 30)
+		// scene.fog = new THREE.Fog(setColor, 6, 30)
+		scene.fog = new THREE.FogExp2(setColor, 0.05)
 
 		this.setState({ scene })
 	}
@@ -398,8 +401,13 @@ class City extends Component {
 
 		if (animationRunning) {
 			this.setState({ animationRunning: false })
+			this.hideCity()
 		}
 	}
+
+	hideCity() {}
+
+	showCity() {}
 
 	/**
 	 * events
