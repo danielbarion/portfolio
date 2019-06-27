@@ -111,6 +111,13 @@
 	.transition-element
 		width 100vw
 		height 100vh
-		background-color black
+		background-color transparent
 		position absolute
-		z-index $transitionElement_index
+		z-index 0
+		transition background-color 600ms ease
+
+		&[active]
+			z-index $transitionElement_index
+
+		&[active=true]
+			background-color black

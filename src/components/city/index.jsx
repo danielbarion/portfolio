@@ -55,8 +55,8 @@ class City extends Component {
 		this.animate = this.animate.bind(this)
 		this.startAnimation = this.startAnimation.bind(this)
 		this.stopAnimation = this.stopAnimation.bind(this)
-		this.hideCity = this.hideCity.bind(this)
-		this.showCity = this.showCity.bind(this)
+		this.showTransitionElement = this.showTransitionElement.bind(this)
+		this.hideTransitionElement = this.hideTransitionElement.bind(this)
 	}
 
 	/**
@@ -393,7 +393,7 @@ class City extends Component {
 
 		if (!animationRunning) {
 			this.setState({ animationRunning: true }, () => this.animate())
-			this.showCity()
+			this.hideTransitionElement()
 		}
 	}
 
@@ -401,14 +401,23 @@ class City extends Component {
 		const { animationRunning } = this.state
 
 		if (animationRunning) {
-			this.setState({ animationRunning: false })
-			this.hideCity()
+			setTimeout(() => this.setState({ animationRunning: false }), 650)
+			this.showTransitionElement()
 		}
 	}
 
-	hideCity() {}
+	showTransitionElement() {
+		const transitionElement = document.querySelector('.transition-element')
+		transitionElement.setAttribute('active', 'true')
+	}
 
-	showCity() {}
+	hideTransitionElement() {
+		const transitionElement = document.querySelector('.transition-element')
+
+		transitionElement.setAttribute('active', 'false')
+
+		setTimeout(() => transitionElement.removeAttribute('active'), 650)
+	}
 
 	/**
 	 * events
