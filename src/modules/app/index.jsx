@@ -24,7 +24,17 @@ class App extends Component {
 	/**
 	 * lifecycle
 	 */
+	componentWillMount() {
+		window.showTransitionElement = this.showTransitionElement
+		window.hideTransitionElement = this.hideTransitionElement
+	}
+
 	componentDidMount() {}
+
+	componentWillUnmount() {
+		window.showTransitionElement = null
+		window.hideTransitionElement = null
+	}
 
 	/**
 	 * funcs
@@ -44,6 +54,19 @@ class App extends Component {
 	}
 	stopCityAnimation() {
 		window.dispatchEvent(new CustomEvent('stopCityAnimation'))
+	}
+
+	showTransitionElement() {
+		// Todo: move this function to context
+		const transitionElement = document.querySelector('.transition-element')
+		transitionElement.setAttribute('active', 'true')
+	}
+
+	hideTransitionElement() {
+		// Todo: move this function to context
+		const transitionElement = document.querySelector('.transition-element')
+		transitionElement.setAttribute('active', 'false')
+		setTimeout(() => transitionElement.removeAttribute('active'), 650)
 	}
 
 	/**
