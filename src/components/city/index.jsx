@@ -393,6 +393,7 @@ class City extends Component {
 
 		if (!animationRunning) {
 			this.setState({ animationRunning: true }, () => this.animate())
+			this.showCity()
 		}
 	}
 
