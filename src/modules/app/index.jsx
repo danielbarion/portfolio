@@ -70,6 +70,7 @@ class App extends Component {
 		const _navigationBackground = `${_navigation}-background`
 		const _logo = `${_header}-logo`
 		const _bottom = `${_header}-bottom`
+		const _transitionElement = 'transition-element'
 
 		/**
 		 * render functions
@@ -77,12 +78,17 @@ class App extends Component {
 		const main = () => (
 			<div className={_root}>
 				<City />
+				{transitionElement()}
 				{/* {logo()} */}
 				{headerText()}
 				{navigationBackground()}
 				{navigation()}
 				{bottom()}
 			</div>
+		)
+
+		const transitionElement = () => (
+			<div className={_transitionElement}></div>
 		)
 
 		const headerText = () => (
