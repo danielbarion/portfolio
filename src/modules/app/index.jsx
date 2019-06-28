@@ -13,13 +13,18 @@ import Galaxy from 'components/galaxy'
 class App extends Component {
 	constructor(props) {
 		super(props)
-		this.state = {}
+		this.state = {
+			scenes: [
+				{ name: 'city', active: true },
+				{ name: 'galaxy', active: false }
+			]
+		}
 
 		/**
 		 * binded funcs
 		 */
-		// this.initializeCanvas = this.initializeCanvas.bind(this)
-
+		this.getActiveScene = this.getActiveScene.bind(this)
+		this.selectScene = this.selectScene.bind(this)
 	}
 
 	/**
@@ -40,7 +45,32 @@ class App extends Component {
 	/**
 	 * funcs
 	 */
+	getActiveScene(name) {
+		const { scenes } = this.state
 
+		const [selectedScene] = scenes.filter(scene => scene.name == name)
+
+		return selectedScene.active
+	}
+
+	selectScene(name) {
+		const { scenes } = this.state
+		let previousActiveIndex
+		let nextActiveIndex
+
+		scenes.forEach((scene, index) => {
+			if (scene.active) previousActiveIndex = index
+			if (scene.name == name)	nextActiveIndex = index
+		})
+
+		window.showTransitionElement()
+
+		setTimeout(() => {
+			this.stopSelectedAnimation(previousActiveIndex)
+			this.startSelectedAnimation(nextActiveIndex)
+			window.hideTransitionElement()
+		}, 650)
+	}
 
 	/**
 	 * helpers
@@ -50,11 +80,23 @@ class App extends Component {
 	/**
 	 * events
 	 */
-	startCityAnimation() {
-		window.dispatchEvent(new CustomEvent('startCityAnimation'))
+	startSelectedAnimation(index) {
+		const { scenes } = this.state
+		const scene = scenes[index]
+		scene.active = true
+
+		this.setState({ scene }, () => {
+			window.dispatchEvent(new CustomEvent(`start${scene.name.charAt(0).toUpperCase() + scene.name.slice(1)}Animation`))
+		})
 	}
-	stopCityAnimation() {
-		window.dispatchEvent(new CustomEvent('stopCityAnimation'))
+	stopSelectedAnimation(index) {
+		const { scenes } = this.state
+		const scene = scenes[index]
+		scene.active = false
+
+		this.setState({ scene }, () => {
+			window.dispatchEvent(new CustomEvent(`stop${scene.name.charAt(0).toUpperCase() + scene.name.slice(1)}Animation`))
+		})
 	}
 
 	showTransitionElement() {
@@ -101,8 +143,8 @@ class App extends Component {
 		 */
 		const main = () => (
 			<div className={_root}>
-				<City />
-				{/* <Galaxy /> */}
+				<City isActive={this.getActiveScene('city')} />
+				<Galaxy isActive={this.getActiveScene('galaxy')} />
 				{transitionElement()}
 				{/* {logo()} */}
 				{headerText()}
@@ -148,10 +190,10 @@ class App extends Component {
 		const navigation = () => (
 			<div className={_navigation}>
 				<ul>
-					<li><a href="#header" onClick={this.startCityAnimation}>Home</a></li>
-					<li><a href="#header" onClick={this.stopCityAnimation}>About</a></li>
-					<li><a href="#header">Projects</a></li>
-					<li><a href="#header">Contact</a></li>
+					<li><a href="#" onClick={this.selectScene.bind(this, 'city')}>Home</a></li>
+					<li><a href="#" onClick={this.selectScene.bind(this, 'galaxy')}>About</a></li>
+					<li><a href="#" onClick={this.selectScene.bind(this, 'city')}>Projects</a></li>
+					<li><a href="#" onClick={this.selectScene.bind(this, 'galaxy')}>Contact</a></li>
 				</ul>
 			</div>
 		)

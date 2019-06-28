@@ -10,20 +10,14 @@ class Galaxy extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			animationRunning: true,
-			canRotate: true,
-			starsAmount: 20,
+			animationRunning: this.props.isActive,
 			renderer: null,
-			galaxyElem: null,
-			initialCameraPositions: {
-				x: 70,
-				y: 30,
-				z: 5,
-			},
-			camera: null,
-			plane: null,
+			starsAmount: 30,
 			// Fog Background
 			setColor: 0x00adff,
+			moonLight: null,
+			moonLight2: null,
+			plane: null,
 			scene: new THREE.Scene(),
 			stars: new THREE.Group(),
 			starsLights: new THREE.Group()
@@ -40,11 +34,11 @@ class Galaxy extends Component {
 		this.createTerrain = this.createTerrain.bind(this)
 		this.createStars = this.createStars.bind(this)
 		this.updateStar = this.updateStar.bind(this)
-		this.mouseFunctions = this.mouseFunctions.bind(this)
 		this.onWindowResize = this.onWindowResize.bind(this)
 		this.animate = this.animate.bind(this)
 		this.startAnimation = this.startAnimation.bind(this)
 		this.stopAnimation = this.stopAnimation.bind(this)
+		this.getActiveAttr = this.getActiveAttr.bind(this)
 	}
 
 	/**
@@ -52,8 +46,8 @@ class Galaxy extends Component {
 	 */
 	componentDidMount() {
 		window.addEventListener('resize', this.onWindowResize, false)
-		// window.addEventListener('startCityAnimation', this.startAnimation, false)
-		// window.addEventListener('stopCityAnimation', this.stopAnimation, false)
+		window.addEventListener('startGalaxyAnimation', this.startAnimation, false)
+		window.addEventListener('stopGalaxyAnimation', this.stopAnimation, false)
 		this.start()
 	}
 
@@ -62,13 +56,12 @@ class Galaxy extends Component {
 	 */
 	start() {
 		new Promise(resolve => this.initializeCanvas(resolve))
-		.then(() => this.initializeCamera())
 		.then(() => this.initializeFogBackground())
+		.then(() => this.initializeCamera())
 		.then(() => this.initializeLights())
 		.then(() => this.createMoon())
 		.then(() => this.createTerrain())
 		.then(() => this.createStars())
-		.then(() => this.mouseFunctions())
 		.then(() => this.animate())
 	}
 
@@ -80,6 +73,7 @@ class Galaxy extends Component {
 			depth: true,
 		})
 		renderer.setSize(window.innerWidth, window.innerHeight)
+		renderer.setClearColor(0x001a2d)
 		renderer.domElement.id = "galaxy"
 
 		if (window.innerWidth > 800) {
@@ -93,17 +87,15 @@ class Galaxy extends Component {
 		const galaxyElem = document.querySelector('.galaxy')
 		galaxyElem.appendChild(renderer.domElement)
 
-		this.setState({ renderer, galaxyElem }, () => resolve())
+		this.setState({ renderer }, () => resolve())
 	}
 
 	initializeCamera() {
-		const { initialCameraPositions } = this.state
 		const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 200)
 
-		camera.position.set(0, 6, 16)
-		camera.position.x = initialCameraPositions.x
-		camera.position.y = initialCameraPositions.y
-		camera.position.z = initialCameraPositions.z
+		camera.position.x = 70
+		camera.position.y = 30
+		camera.position.z = 5
 		camera.lookAt(new THREE.Vector3())
 
 		this.setState({ camera })
@@ -112,7 +104,7 @@ class Galaxy extends Component {
 	initializeFogBackground() {
 		const { scene, setColor } = this.state
 
-		scene.background = new THREE.Color(setColor)
+		// scene.background = new THREE.Color(setColor)
 		scene.fog = new THREE.Fog(0x001a2d, 80, 140)
 		// scene.fog = new THREE.FogExp2(setColor, 0.05)
 
@@ -168,7 +160,7 @@ class Galaxy extends Component {
 		const geometry = new THREE.PlaneGeometry(150, 150, 120, 120)
 		const matrix = new THREE.Matrix4()
 
-		matrix.makeRotationX(Math.PI & - 0.5)
+		matrix.makeRotationX(Math.PI * - 0.5)
 		geometry.applyMatrix(matrix)
 
 		for (let index = 0; index < geometry.vertices.length; index++) {
@@ -182,6 +174,7 @@ class Galaxy extends Component {
 			emissive: 0x032f50
 		})
 		const plane = new THREE.Mesh(geometry, material)
+
 		scene.add(plane)
 
 		this.setState({ scene, plane })
@@ -195,9 +188,6 @@ class Galaxy extends Component {
 			starsAmount
 		} = this.state
 
-		scene.add(stars)
-		scene.add(starsLights)
-
 		const geometry = new THREE.SphereBufferGeometry(0.3, 16, 16)
 		const material = new THREE.MeshBasicMaterial({
 			color: 0xffffff
@@ -205,11 +195,12 @@ class Galaxy extends Component {
 
 		for (let index = 0; index < starsAmount; index++) {
 			const star = new THREE.Mesh(geometry, material)
-			star.position.x = (Math.random - 0.5) * 150
-			star.position.z = (Math.random - 0.5) * 150
+			star.position.x = (Math.random() - 0.5) * 150
+			star.position.z = (Math.random() - 0.5) * 150
 
 			const ratio = noise.simplex3(star.position.x * 0.03, star.position.z * 0.03, 0)
 			star.position.y = ratio * 10 + 0.3
+
 			stars.add(star)
 
 			const velX = (Math.random() + 0.1) * 0.1 * (Math.random() < 0.5 ? -1 : 1)
@@ -219,8 +210,12 @@ class Galaxy extends Component {
 			const starLight = new THREE.PointLight(0xffffff, 0.8, 3)
 			starLight.position.copy(star.position)
 			starLight.position.y += 0.5
+
 			starsLights.add(starLight)
 		}
+
+		scene.add(stars)
+		scene.add(starsLights)
 
 		this.setState({ scene, stars, starsLights })
 	}
@@ -248,32 +243,8 @@ class Galaxy extends Component {
 
 		starsLights.children[index].position.copy(star.position)
 		starsLights.children[index].position.y += 0.5
-	}
 
-	mouseFunctions() {
-		const {
-			camera,
-			renderer
-		} = this.state
-
-		const onMouseDown = (event) => {
-			event.preventDefault()
-			this.setState({ canRotate: false })
-		}
-
-		const onMouseUp = (event) => {
-			event.preventDefault()
-			this.setState({ canRotate: true })
-		}
-
-		THREE.OrbitControls(camera, renderer.domElement)
-
-		renderer.domElement.addEventListener('mousedown', onMouseDown, false )
-		renderer.domElement.addEventListener('mouseup', onMouseUp, false )
-	}
-
-	setCamera() {
-		this.createLine(0.1, 20, 0xFFFFFF)
+		this.setState({ starsLights })
 	}
 
 	animate() {
@@ -286,7 +257,7 @@ class Galaxy extends Component {
 			starsAmount
 		} = this.state
 
-		// if (!animationRunning) return
+		if (!animationRunning) return
 
 		requestAnimationFrame(this.animate)
 
@@ -294,7 +265,6 @@ class Galaxy extends Component {
 			this.updateStar(stars.children[index], index)
 		}
 
-		// camera.lookAt(city.position)
 		renderer.render(scene, camera)
 	}
 
@@ -306,8 +276,6 @@ class Galaxy extends Component {
 
 		if (!animationRunning) {
 			this.setState({ animationRunning: true }, () => this.animate())
-			// Todo: move this function to context
-			window.hideTransitionElement()
 		}
 	}
 
@@ -316,8 +284,6 @@ class Galaxy extends Component {
 
 		if (animationRunning) {
 			setTimeout(() => this.setState({ animationRunning: false }), 650)
-			// Todo: move this function to context
-			window.showTransitionElement()
 		}
 	}
 
@@ -334,6 +300,15 @@ class Galaxy extends Component {
 	}
 
 	/**
+	 * attrs
+	 */
+	getActiveAttr() {
+		const { isActive } = this.props
+
+		return isActive.toString()
+	}
+
+	/**
 	* React Render
 	*/
 	render() {
@@ -346,7 +321,7 @@ class Galaxy extends Component {
 		 * render functions
 		 */
 		const main = () => (
-			<div className={_root}></div>
+			<div className={_root} data-active={this.getActiveAttr()}></div>
 		)
 
 

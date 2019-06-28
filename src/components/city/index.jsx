@@ -10,7 +10,7 @@ class City extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			animationRunning: true,
+			animationRunning: this.props.isActive,
 			canRotate: true,
 			buildings: 200,
 			particles: 1500,
@@ -55,6 +55,7 @@ class City extends Component {
 		this.animate = this.animate.bind(this)
 		this.startAnimation = this.startAnimation.bind(this)
 		this.stopAnimation = this.stopAnimation.bind(this)
+		this.getActiveAttr = this.getActiveAttr.bind(this)
 	}
 
 	/**
@@ -391,8 +392,6 @@ class City extends Component {
 
 		if (!animationRunning) {
 			this.setState({ animationRunning: true }, () => this.animate())
-			// Todo: move this function to context
-			window.hideTransitionElement()
 		}
 	}
 
@@ -401,8 +400,6 @@ class City extends Component {
 
 		if (animationRunning) {
 			setTimeout(() => this.setState({ animationRunning: false }), 650)
-			// Todo: move this function to context
-			window.showTransitionElement()
 		}
 	}
 
@@ -419,6 +416,15 @@ class City extends Component {
 	}
 
 	/**
+	 * attrs
+	 */
+	getActiveAttr() {
+		const { isActive } = this.props
+
+		return isActive.toString()
+	}
+
+	/**
 	* React Render
 	*/
 	render() {
@@ -431,7 +437,7 @@ class City extends Component {
 		 * render functions
 		 */
 		const main = () => (
-			<div className={_root}></div>
+			<div className={_root} data-active={this.getActiveAttr()}></div>
 		)
 
 
