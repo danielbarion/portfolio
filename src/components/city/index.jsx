@@ -26,7 +26,8 @@ class City extends Component {
 			createCarPos: true,
 			uSpeed: 0.001,
 			// Fog Background
-			setColor: 0x00adff,
+			setColor: 0x55adff,
+			// setColor: 0x00adff,
 			// setColor: 0x00A1F2,
 			// setColor: 0xF02050,
 			// setColor: 0xF2F111,
