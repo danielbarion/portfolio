@@ -124,6 +124,11 @@ class App extends Component {
 
 		// three
 		// https://codepen.io/Mamboleoo/pen/XzXazN
+
+
+		// Fundamentals
+		// https://threejsfundamentals.org/threejs/lessons/threejs-primitives.html
+
 		/**
 		 * classNames
 		 */

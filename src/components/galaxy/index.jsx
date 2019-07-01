@@ -157,19 +157,19 @@ class Galaxy extends Component {
 
 	createTerrain() {
 		const {	scene	} = this.state
-		// https://jsfiddle.net/prisoner849/d1jr3yd3/
-		// const geometry = new THREE.PlaneBufferGeometry(150, 150, 120, 120)
-		// https://threejs.org/docs/#api/en/core/BufferAttribute
-		const geometry = new THREE.PlaneGeometry(150, 150, 120, 120)
+		const geometry = new THREE.PlaneBufferGeometry(150, 150, 120, 120)
 		const matrix = new THREE.Matrix4()
 
 		matrix.makeRotationX(Math.PI * - 0.5)
 		geometry.applyMatrix(matrix)
 
-		for (let index = 0; index < geometry.vertices.length; index++) {
-			const vector = geometry.vertices[index]
-			const ratio = noise.simplex3(vector.x * 0.03, vector.z * 0.03, 0)
-			vector.y = ratio * 10
+		for (let index = 0; index < geometry.index.count; index++) {
+			const positionX = geometry.attributes.position.getX(index)
+			const positionZ = geometry.attributes.position.getZ(index)
+
+			const ratio = noise.simplex3(positionX * 0.03, positionZ * 0.03, 0)
+
+			geometry.attributes.position.setY(index, (ratio * 10))
 		}
 
 		const material = new THREE.MeshPhongMaterial({
