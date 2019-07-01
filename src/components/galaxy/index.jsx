@@ -157,6 +157,9 @@ class Galaxy extends Component {
 
 	createTerrain() {
 		const {	scene	} = this.state
+		// https://jsfiddle.net/prisoner849/d1jr3yd3/
+		// const geometry = new THREE.PlaneBufferGeometry(150, 150, 120, 120)
+		// https://threejs.org/docs/#api/en/core/BufferAttribute
 		const geometry = new THREE.PlaneGeometry(150, 150, 120, 120)
 		const matrix = new THREE.Matrix4()
 
@@ -242,7 +245,7 @@ class Galaxy extends Component {
 		star.position.y = ratio * 10 + 0.3
 
 		starsLights.children[index].position.copy(star.position)
-		starsLights.children[index].position.y += 0.5
+		starsLights.children[index].position.y += 1
 
 		this.setState({ starsLights })
 	}
