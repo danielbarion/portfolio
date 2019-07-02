@@ -148,6 +148,8 @@ module.exports = function(webpackEnv) {
       // changing JS code would still trigger a refresh.
     ].filter(Boolean),
     output: {
+      // Fix for workers
+      globalObject: 'this',
       // The build folder.
       path: isEnvProduction ? paths.appBuild : undefined,
       // Add /* filename */ comments to generated require()s in the output.
@@ -329,6 +331,13 @@ module.exports = function(webpackEnv) {
             // "url" loader works like "file" loader except that it embeds assets
             // smaller than specified limit in bytes as data URLs to avoid requests.
             // A missing `test` is equivalent to a match.
+            // Load web workers
+            {
+              test: /\.worker\.js$/,
+              use: {
+                loader: require.resolve('worker-loader')
+              }
+            },
             {
               test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/],
               loader: require.resolve('url-loader'),

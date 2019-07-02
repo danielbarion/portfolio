@@ -3,12 +3,23 @@
  */
 import React, { Component } from 'react'
 import { appContext } from 'context/app-context'
+import canvasWorkerJS from './canvas.worker.js'
 
 const THREE = window.THREE
 
 class City extends Component {
 	constructor(props) {
 		super(props)
+
+    /**
+     * worker
+     */
+		this.canvasWorker = canvasWorkerJS()
+		this.canvasWorker.onmessage = (data) => this.handleWorkerCallback(data)
+
+		/**
+		 * state
+		 */
 		this.state = {
 			animationRunning: this.props.isActive,
 			canRotate: true,
@@ -50,10 +61,12 @@ class City extends Component {
 		this.initializeCity = this.initializeCity.bind(this)
 		this.initializeLights = this.initializeLights.bind(this)
 		this.createLine = this.createLine.bind(this)
+		this.generateLines = this.generateLines.bind(this)
 		this.setTintColor = this.setTintColor.bind(this)
 		this.mouseFunctions = this.mouseFunctions.bind(this)
 		this.onWindowResize = this.onWindowResize.bind(this)
 		this.animate = this.animate.bind(this)
+		this.tryAnimateWorker = this.tryAnimateWorker.bind(this)
 		this.startAnimation = this.startAnimation.bind(this)
 		this.stopAnimation = this.stopAnimation.bind(this)
 		this.getActiveAttr = this.getActiveAttr.bind(this)
@@ -67,6 +80,10 @@ class City extends Component {
 		window.addEventListener('startCityAnimation', this.startAnimation, false)
 		window.addEventListener('stopCityAnimation', this.stopAnimation, false)
 		this.start()
+	}
+
+	componentWillUnmount() {
+		this.canvasWorker.terminate()
 	}
 
 	/**
@@ -83,7 +100,34 @@ class City extends Component {
 		// .then(() => {
 		// 	this.gridHelper()
 		// })
-		.then(() => this.animate())
+		// .then(() => this.animate())
+		.then(() => this.tryAnimateWorker())
+	}
+
+	handleWorkerCallback(data) {
+		const {
+			smoke,
+			city,
+			camera,
+			renderer,
+			scene,
+			canRotate,
+			animationRunning
+		} = this.state
+
+		console.log('call back data: ', data)
+
+		const {
+			cameraX,
+			cameraY,
+			cameraZ
+		} = data.data.camera
+
+		camera.position.x = cameraX
+		camera.position.y = cameraY
+		camera.position.z = cameraZ
+
+		camera.lookAt(city)
 	}
 
 	initializeCanvas(resolve) {
@@ -93,6 +137,7 @@ class City extends Component {
 			alpha: true,
 			depth: true,
 		})
+
 		renderer.setSize(window.innerWidth, window.innerHeight)
 		renderer.domElement.id = "city"
 
@@ -333,6 +378,42 @@ class City extends Component {
 
 	setCamera() {
 		this.createLine(0.1, 20, 0xFFFFFF)
+	}
+
+	tryAnimateWorker() {
+		const {
+			smoke,
+			city,
+			camera,
+			renderer,
+			scene,
+			canRotate,
+			animationRunning
+		} = this.state
+
+		if (!animationRunning) return
+
+		requestAnimationFrame(this.tryAnimateWorker)
+
+		if (canRotate) {
+			const cameraX = camera.position.x
+			const cameraY = camera.position.y
+			const cameraZ = camera.position.z
+
+			this.canvasWorker.postMessage({ type: 'camera', data: { cameraX, cameraY, cameraZ } })
+		}
+
+		// Snow Fall
+		smoke.children.forEach(snow => {
+			if (snow.position.y < -2.5) {
+				snow.position.y = 5
+			} else {
+				snow.position.y -= 0.03
+			}
+		})
+
+		camera.lookAt(city.position)
+		renderer.render(scene, camera)
 	}
 
 	animate() {

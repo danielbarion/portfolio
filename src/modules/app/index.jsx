@@ -129,9 +129,6 @@ class App extends Component {
 		// Fundamentals
 		// https://threejsfundamentals.org/threejs/lessons/threejs-primitives.html
 
-		// Web worker off-canvas
-		// https://dev.to/evilmartians/faster-webgl-three-js-3d-graphics-with-offscreencanvas-and-web-workers-43he
-
 		/**
 		 * classNames
 		 */
