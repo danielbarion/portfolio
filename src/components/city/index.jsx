@@ -22,34 +22,6 @@ class City extends Component {
 		 */
 		this.state = {
 			animationRunning: this.props.isActive,
-			canRotate: true,
-			buildings: 200,
-			particles: 1500,
-			renderer: null,
-			cityElem: null,
-			initialCameraPositions: {
-				x: Math.cos(performance.now() / 10000) * 20,
-				y: 12,
-				z: Math.sin(performance.now() / 10000) * 20,
-			},
-			camera: null,
-			controls: null,
-			createCarPos: true,
-			uSpeed: 0.001,
-			// Fog Background
-			setColor: 0x55adff,
-			// setColor: 0x00adff,
-			// setColor: 0x00A1F2,
-			// setColor: 0xF02050,
-			// setColor: 0xF2F111,
-			// setColor: 0xFF6347,
-			setTintNum: true,
-			scene: new THREE.Scene(),
-			city: new THREE.Object3D(),
-			smoke: new THREE.Object3D(),
-			town: new THREE.Object3D(),
-			raycaster: new THREE.Raycaster(),
-			mouse: new THREE.Vector2()
 		}
 
 		/**
