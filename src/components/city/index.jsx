@@ -5,8 +5,6 @@ import React, { Component } from 'react'
 import { appContext } from 'context/app-context'
 import canvasWorkerJS from './canvas.worker.js'
 
-const THREE = window.THREE
-
 class City extends Component {
 	constructor(props) {
 		super(props)
