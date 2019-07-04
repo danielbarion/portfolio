@@ -296,7 +296,7 @@ const start = (canvas) => {
 /**
  * utils
  */
-setTintColor = () => {
+const setTintColor = () => {
   let { setColor, setTintNum } = myState
 
   if (setTintNum) {
@@ -313,7 +313,7 @@ setTintColor = () => {
   return setColor
 }
 
-changeBuildingColors = () => {
+const changeBuildingColors = () => {
   setTintColor()
 }
 
@@ -376,6 +376,13 @@ onmessage = function(event) {
       myState.innerHeight = data.innerHeight
 
       start(canvas)
+      break;
+
+    case 'resize':
+      myState.innerWidth = data.innerWidth
+      myState.innerHeight = data.innerHeight
+
+      onWindowResize()
       break;
 
     default:

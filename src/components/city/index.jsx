@@ -26,13 +26,14 @@ class City extends Component {
 		 * binded funcs
 		 */
 		this.getActiveAttr = this.getActiveAttr.bind(this)
+		this.onWindowResize = this.onWindowResize.bind(this)
 	}
 
 	/**
 	 * lifecycle
 	 */
 	componentDidMount() {
-		// window.addEventListener('resize', this.onWindowResize, false)
+		window.addEventListener('resize', this.onWindowResize, false)
 		// window.addEventListener('startCityAnimation', this.startAnimation, false)
 		// window.addEventListener('stopCityAnimation', this.stopAnimation, false)
 		this.start()
@@ -60,7 +61,18 @@ class City extends Component {
 	}
 
 	handleWorkerCallback(data) {
-		console.log('call back data: ', data)
+		// do nothing.
+		// console.log('call back data: ', data)
+	}
+
+	onWindowResize() {
+		this.canvasWorker.postMessage({
+			type: 'resize',
+			data: {
+				innerWidth: window.innerWidth,
+				innerHeight: window.innerHeight
+			}
+		})
 	}
 
 	/**
