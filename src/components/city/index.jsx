@@ -27,6 +27,8 @@ class City extends Component {
 		 */
 		this.getActiveAttr = this.getActiveAttr.bind(this)
 		this.onWindowResize = this.onWindowResize.bind(this)
+		this.startAnimation = this.startAnimation.bind(this)
+		this.stopAnimation = this.stopAnimation.bind(this)
 	}
 
 	/**
@@ -34,8 +36,8 @@ class City extends Component {
 	 */
 	componentDidMount() {
 		window.addEventListener('resize', this.onWindowResize, false)
-		// window.addEventListener('startCityAnimation', this.startAnimation, false)
-		// window.addEventListener('stopCityAnimation', this.stopAnimation, false)
+		window.addEventListener('startCityAnimation', this.startAnimation, false)
+		window.addEventListener('stopCityAnimation', this.stopAnimation, false)
 		this.start()
 	}
 
@@ -73,6 +75,28 @@ class City extends Component {
 				innerHeight: window.innerHeight
 			}
 		})
+	}
+
+	startAnimation() {
+		this.canvasWorker.postMessage({
+			type: 'startAnimation',
+			data: {
+				animationRunning: true
+			}
+		})
+
+		this.setState({ animationRunning: true })
+	}
+
+	stopAnimation() {
+		this.canvasWorker.postMessage({
+			type: 'stopAnimation',
+			data: {
+				animationRunning: false
+			}
+		})
+
+		this.setState({ animationRunning: false })
 	}
 
 	/**

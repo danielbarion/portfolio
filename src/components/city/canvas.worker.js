@@ -6,9 +6,7 @@ self.importScripts('https://cdnjs.cloudflare.com/ajax/libs/three.js/106/three.mi
 /**
  * Settings
  */
-// const THREE = null
-
-const myState = {
+let myState = {
   animationRunning: true,
   canRotate: true,
   buildings: 200,
@@ -383,6 +381,18 @@ onmessage = function(event) {
       myState.innerHeight = data.innerHeight
 
       onWindowResize()
+      break;
+
+    case 'setState':
+      myState = {...myState, ...data}
+      break;
+
+    case 'startAnimation':
+      startAnimation()
+      break;
+
+    case 'stopAnimation':
+      stopAnimation()
       break;
 
     default:
