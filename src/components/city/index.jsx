@@ -67,6 +67,9 @@ class City extends Component {
 		// console.log('call back data: ', data)
 	}
 
+	/**
+	* helpers
+	*/
 	onWindowResize() {
 		this.canvasWorker.postMessage({
 			type: 'resize',
