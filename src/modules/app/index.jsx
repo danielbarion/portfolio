@@ -170,7 +170,7 @@ class App extends Component {
 		const headerText = () => (
 			<div className={_headerText}>
 				<div className={_headerTitle}>
-					<h1>Lorem Ipsum</h1>
+					<h1>Hello, welcome!</h1>
 				</div>
 				<div className={_headerDescription}>
 					<p>Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet .</p>
