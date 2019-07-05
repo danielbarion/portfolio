@@ -201,7 +201,7 @@ class App extends Component {
 				<ul>
 					<li><a href="#" onClick={this.selectScene.bind(this, 'city')}>About</a></li>
 					<li><a href="#" onClick={this.selectScene.bind(this, 'galaxy')}>Skills</a></li>
-					<li><a href="https://github.com/danielbarion" target='_blank'>Github</a></li>
+					<li><a href="https://github.com/danielbarion" target='_blank'>GitHub</a></li>
 					<li><a href="https://www.linkedin.com/in/barion/" target='_blank'>LinkedIn</a></li>
 				</ul>
 			</div>
