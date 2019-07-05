@@ -173,7 +173,7 @@ class App extends Component {
 					<h1>Hello, welcome!</h1>
 				</div>
 				<div className={_headerDescription}>
-					<p>Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet .</p>
+					<p>I'm a front-end developer who love music, games and pet projects. I believe we can change the world to better with a little kindness in day a day because kindness generates kindness. Be kindness, be happy!</p>
 				</div>
 			</div>
 		)
