@@ -2,6 +2,7 @@
  * imports
  */
 self.importScripts('https://cdnjs.cloudflare.com/ajax/libs/three.js/106/three.min.js')
+self.importScripts('OrbitControls.js')
 
 /**
  * Settings
