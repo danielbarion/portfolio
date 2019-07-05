@@ -8,7 +8,7 @@ self.importScripts('perlin.js')
  * Settings
  */
 let myState = {
-  animationRunning: false,
+  animationRunning: true,
   renderer: null,
   starsAmount: 30,
   // Fog Background
@@ -245,7 +245,6 @@ const start = (canvas) => {
 		.then(() => createStars())
 		.then(() => animate())
 }
-
 
 /**
  * utils

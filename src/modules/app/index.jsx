@@ -63,6 +63,10 @@ class App extends Component {
 			if (scene.name == name)	nextActiveIndex = index
 		})
 
+		if (nextActiveIndex == previousActiveIndex) {
+			return
+		}
+
 		window.showTransitionElement()
 
 		setTimeout(() => {
