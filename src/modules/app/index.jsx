@@ -199,10 +199,10 @@ class App extends Component {
 		const navigation = () => (
 			<div className={_navigation}>
 				<ul>
-					<li><a href="#" onClick={this.selectScene.bind(this, 'city')}>Home</a></li>
-					<li><a href="#" onClick={this.selectScene.bind(this, 'galaxy')}>About</a></li>
-					<li><a href="#" onClick={this.selectScene.bind(this, 'city')}>Projects</a></li>
-					<li><a href="#" onClick={this.selectScene.bind(this, 'galaxy')}>Contact</a></li>
+					<li><a href="#" onClick={this.selectScene.bind(this, 'city')}>About</a></li>
+					<li><a href="#" onClick={this.selectScene.bind(this, 'galaxy')}>Skills</a></li>
+					<li><a href="https://github.com/danielbarion" target='_blank'>Github</a></li>
+					<li><a href="https://www.linkedin.com/in/barion/" target='_blank'>LinkedIn</a></li>
 				</ul>
 			</div>
 		)
