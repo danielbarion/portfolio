@@ -372,6 +372,7 @@ onmessage = function(event) {
 
       myState.innerWidth = data.innerWidth
       myState.innerHeight = data.innerHeight
+      myState.animationRunning = data.animationRunning
 
       start(canvas)
       break;

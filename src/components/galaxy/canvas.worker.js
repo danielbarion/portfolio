@@ -301,6 +301,10 @@ onmessage = function (event) {
       myState.innerWidth = data.innerWidth
       myState.innerHeight = data.innerHeight
 
+      if (!data.animationRunning) {
+        this.setTimeout(() => myState.animationRunning = data.animationRunning, 300)
+      }
+
       start(canvas)
       break;
 

@@ -41,6 +41,7 @@ class Galaxy extends Component {
 		this.onWindowResize = this.onWindowResize.bind(this)
 		this.startAnimation = this.startAnimation.bind(this)
 		this.stopAnimation = this.stopAnimation.bind(this)
+		this.start = this.start.bind(this)
 	}
 
 	/**
@@ -57,6 +58,7 @@ class Galaxy extends Component {
 	 * funcs
 	 */
 	start() {
+		const { animationRunning } = this.state
 		const canvasElement = document.getElementById('galaxy')
 		const offscreen = canvasElement.transferControlToOffscreen()
 
@@ -65,7 +67,8 @@ class Galaxy extends Component {
 			data: {
 				canvas: offscreen,
 				innerWidth: window.innerWidth,
-				innerHeight: window.innerHeight
+				innerHeight: window.innerHeight,
+				animationRunning
 			}
 		}, [offscreen])
 	}
