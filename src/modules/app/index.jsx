@@ -14,6 +14,7 @@ class App extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
+			initialized: false,
 			scenes: [
 				{ name: 'city', active: true },
 				{ name: 'galaxy', active: false }
@@ -146,21 +147,27 @@ class App extends Component {
 		const _logo = `${_header}-logo`
 		const _bottom = `${_header}-bottom`
 		const _transitionElement = 'transition-element'
+		const _loader = 'loader'
 
 		/**
 		 * render functions
 		 */
 		const main = () => (
 			<div className={_root}>
-				<City isActive={this.getActiveScene('city')} />
-				<Galaxy isActive={this.getActiveScene('galaxy')} />
+				{/* <City isActive={this.getActiveScene('city')} /> */}
+				{/* <Galaxy isActive={this.getActiveScene('galaxy')} /> */}
 				{transitionElement()}
 				{/* {logo()} */}
 				{headerText()}
 				{navigationBackground()}
 				{navigation()}
 				{bottom()}
+				{loader()}
 			</div>
+		)
+
+		const loader = () => (
+			<div className={_loader}></div>
 		)
 
 		const transitionElement = () => (
