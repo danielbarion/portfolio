@@ -4,6 +4,7 @@
 import React, { Component } from 'react'
 import { appContext } from 'context/app-context'
 import canvasWorkerJS from './canvas.worker.js'
+import { city } from './canvas.main.js'
 
 class City extends Component {
 	constructor(props) {
@@ -39,6 +40,7 @@ class City extends Component {
 		window.addEventListener('resize', this.onWindowResize, false)
 		window.addEventListener('startCityAnimation', this.startAnimation, false)
 		window.addEventListener('stopCityAnimation', this.stopAnimation, false)
+		console.log(city)
 		this.start()
 	}
 
@@ -52,17 +54,28 @@ class City extends Component {
 	start() {
 		const { animationRunning } = this.state
 		const canvasElement = document.getElementById('city')
-		const offscreen = canvasElement.transferControlToOffscreen()
+		if (canvasElement.transferControlToOffscreen) {
+			const offscreen = canvasElement.transferControlToOffscreen()
 
-		this.canvasWorker.postMessage({
-			type: 'start',
-			data: {
-				canvas: offscreen,
-				innerWidth: window.innerWidth,
-				innerHeight: window.innerHeight,
-				animationRunning
-			}
-		}, [offscreen])
+			this.canvasWorker.postMessage({
+				type: 'start',
+				data: {
+					canvas: offscreen,
+					innerWidth: window.innerWidth,
+					innerHeight: window.innerHeight,
+					animationRunning
+				}
+			}, [offscreen])
+		} else {
+			city.startAnimation(
+				{
+					canvas: offscreen,
+					innerWidth: window.innerWidth,
+					innerHeight: window.innerHeight,
+					animationRunning
+				}
+			)
+		}
 	}
 
 	handleWorkerCallback(data) {
@@ -74,33 +87,51 @@ class City extends Component {
 	* helpers
 	*/
 	onWindowResize() {
-		this.canvasWorker.postMessage({
-			type: 'resize',
-			data: {
+		const canvasElement = document.getElementById('city')
+		if (canvasElement.transferControlToOffscreen) {
+			this.canvasWorker.postMessage({
+				type: 'resize',
+				data: {
+					innerWidth: window.innerWidth,
+					innerHeight: window.innerHeight
+				}
+			})
+		} else {
+			city.resize({
 				innerWidth: window.innerWidth,
 				innerHeight: window.innerHeight
-			}
-		})
+			})
+		}
 	}
 
 	startAnimation() {
-		this.canvasWorker.postMessage({
-			type: 'startAnimation',
-			data: {
-				animationRunning: true
-			}
-		})
+		const canvasElement = document.getElementById('city')
+		if (canvasElement.transferControlToOffscreen) {
+			this.canvasWorker.postMessage({
+				type: 'startAnimation',
+				data: {
+					animationRunning: true
+				}
+			})
+		} else {
+			city.startAnimation()
+		}
 
 		this.setState({ animationRunning: true })
 	}
 
 	stopAnimation() {
-		this.canvasWorker.postMessage({
-			type: 'stopAnimation',
-			data: {
-				animationRunning: false
-			}
-		})
+		const canvasElement = document.getElementById('city')
+		if (canvasElement.transferControlToOffscreen) {
+			this.canvasWorker.postMessage({
+				type: 'stopAnimation',
+				data: {
+					animationRunning: false
+				}
+			})
+		} else {
+			city.stopAnimation()
+		}
 
 		this.setState({ animationRunning: false })
 	}
