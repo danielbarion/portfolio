@@ -336,9 +336,6 @@ module.exports = function(webpackEnv) {
               test: /\.worker\.js$/,
               use: {
                 loader: require.resolve('worker-loader')
-              },
-              options: {
-                inline: true
               }
             },
             {
