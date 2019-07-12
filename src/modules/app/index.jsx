@@ -36,7 +36,9 @@ class App extends Component {
 		window.hideTransitionElement = this.hideTransitionElement
 	}
 
-	componentDidMount() {}
+	componentDidMount() {
+		setTimeout(() => this.setState({ initialized: true }), 3000)
+	}
 
 	componentWillUnmount() {
 		window.showTransitionElement = null
@@ -148,26 +150,35 @@ class App extends Component {
 		const _bottom = `${_header}-bottom`
 		const _transitionElement = 'transition-element'
 		const _loader = 'loader'
+		const _ripple = `${_loader}-ripple`
 
 		/**
 		 * render functions
 		 */
 		const main = () => (
 			<div className={_root}>
-				{/* <City isActive={this.getActiveScene('city')} /> */}
-				{/* <Galaxy isActive={this.getActiveScene('galaxy')} /> */}
+				{!this.state.initialized ? loader() : ''}
+				<City isActive={this.getActiveScene('city')} />
+				<Galaxy isActive={this.getActiveScene('galaxy')} />
 				{transitionElement()}
 				{/* {logo()} */}
 				{headerText()}
 				{navigationBackground()}
 				{navigation()}
 				{bottom()}
-				{loader()}
 			</div>
 		)
 
 		const loader = () => (
-			<div className={_loader}></div>
+			<div className={_loader}>
+				<div className={_ripple}>
+					<div></div>
+					<div></div>
+					<div></div>
+					<div></div>
+					<div></div>
+				</div>
+			</div>
 		)
 
 		const transitionElement = () => (
