@@ -8,6 +8,7 @@ self.importScripts('OrbitControls.js')
  * Settings
  */
 let myState = {
+  renderGPU: true,
   animationRunning: true,
   canRotate: true,
   buildings: 200,
@@ -99,13 +100,19 @@ const initializeCity = () => {
     camera,
     renderer,
     buildings,
-    particles
+    particles,
+    renderGPU
   } = myState
 
   const segments = 1
 
   for (let i = 1; i < buildings; i++) {
-    const geometry = new THREE.BoxBufferGeometry(1, 0, 0, segments, segments, segments)
+    let geometry
+    if (renderGPU) {
+      geometry = new THREE.BoxBufferGeometry(1, 0, 0, segments, segments, segments)
+    } else {
+      geometry = new THREE.BoxGeometry(1, 0, 0, segments, segments, segments)
+    }
     const material = new THREE.MeshStandardMaterial({
       color: setTintColor(),
       wireframe: false,
@@ -141,7 +148,14 @@ const initializeCity = () => {
 
   // Particles
   const gmaterial = new THREE.MeshToonMaterial({ color: 0xFFFFFF, side: THREE.DoubleSide })
-  const gparticular = new THREE.SphereBufferGeometry(0.01, 32, 32)
+  let gparticular
+
+  if (renderGPU) {
+    gparticular = new THREE.SphereBufferGeometry(0.01, 32, 32)
+  } else {
+    gparticular = new THREE.SphereGeometry(0.01, 32, 32)
+  }
+
   const aparticular = 10
 
   for (let h = 1; h < particles; h++) {

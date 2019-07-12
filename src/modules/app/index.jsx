@@ -14,6 +14,7 @@ class App extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
+			initialized: false,
 			scenes: [
 				{ name: 'city', active: true },
 				{ name: 'galaxy', active: false }
@@ -35,7 +36,9 @@ class App extends Component {
 		window.hideTransitionElement = this.hideTransitionElement
 	}
 
-	componentDidMount() {}
+	componentDidMount() {
+		setTimeout(() => this.setState({ initialized: true }), 3000)
+	}
 
 	componentWillUnmount() {
 		window.showTransitionElement = null
@@ -146,12 +149,15 @@ class App extends Component {
 		const _logo = `${_header}-logo`
 		const _bottom = `${_header}-bottom`
 		const _transitionElement = 'transition-element'
+		const _loader = 'loader'
+		const _ripple = `${_loader}-ripple`
 
 		/**
 		 * render functions
 		 */
 		const main = () => (
 			<div className={_root}>
+				{!this.state.initialized ? loader() : ''}
 				<City isActive={this.getActiveScene('city')} />
 				<Galaxy isActive={this.getActiveScene('galaxy')} />
 				{transitionElement()}
@@ -160,6 +166,18 @@ class App extends Component {
 				{navigationBackground()}
 				{navigation()}
 				{bottom()}
+			</div>
+		)
+
+		const loader = () => (
+			<div className={_loader}>
+				<div className={_ripple}>
+					<div></div>
+					<div></div>
+					<div></div>
+					<div></div>
+					<div></div>
+				</div>
 			</div>
 		)
 
