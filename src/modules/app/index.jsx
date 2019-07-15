@@ -159,7 +159,7 @@ class App extends Component {
 			<div className={_root}>
 				{!this.state.initialized ? loader() : ''}
 				<City isActive={this.getActiveScene('city')} />
-				<Galaxy isActive={this.getActiveScene('galaxy')} />
+				{/* <Galaxy isActive={this.getActiveScene('galaxy')} /> */}
 				{transitionElement()}
 				{/* {logo()} */}
 				{headerText()}

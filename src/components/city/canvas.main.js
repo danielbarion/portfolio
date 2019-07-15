@@ -236,7 +236,7 @@ const mouseFunctions = () => {
 		myState.canRotate = true
 	}
 
-	// THREE.OrbitControls(camera, renderer.domElement)
+	THREE.OrbitControls(camera, renderer.domElement)
 
 	renderer.domElement.addEventListener('mousedown', onMouseDown, false)
 	renderer.domElement.addEventListener('mouseup', onMouseUp, false)
