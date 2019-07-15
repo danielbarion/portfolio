@@ -188,7 +188,7 @@ class App extends Component {
 		const headerText = () => (
 			<div className={_headerText}>
 				<div className={_headerTitle}>
-					<h1>Hello, welcome!</h1>
+					<h1>Hello, my name is Daniel!</h1>
 				</div>
 				<div className={_headerDescription}>
 					<p>I'm a front-end developer who love music, games and pet projects. I believe we can change the world to better with a little kindness in day a day because kindness generates kindness. Be kindness, be happy!</p>
@@ -217,8 +217,8 @@ class App extends Component {
 		const navigation = () => (
 			<div className={_navigation}>
 				<ul>
-					<li><a href="#" onClick={this.selectScene.bind(this, 'city')}>About</a></li>
-					<li><a href="#" onClick={this.selectScene.bind(this, 'galaxy')}>Skills</a></li>
+					{/* <li><a href="#" onClick={this.selectScene.bind(this, 'city')}>About</a></li> */}
+					{/* <li><a href="#" onClick={this.selectScene.bind(this, 'galaxy')}>Skills</a></li> */}
 					<li><a href="https://github.com/danielbarion" target='_blank'>GitHub</a></li>
 					<li><a href="https://www.linkedin.com/in/barion/" target='_blank'>LinkedIn</a></li>
 				</ul>

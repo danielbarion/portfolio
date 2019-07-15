@@ -21,6 +21,7 @@ class City extends Component {
 		 */
 		this.state = {
 			animationRunning: this.props.isActive,
+			runningOn: 'main' // worker or main
 		}
 
 		/**
@@ -51,9 +52,9 @@ class City extends Component {
 	 * funcs
 	 */
 	start() {
-		const { animationRunning } = this.state
+		const { animationRunning, runningOn } = this.state
 		const canvasElement = document.getElementById('city')
-		if (canvasElement.transferControlToOffscreen) {
+		if (runningOn == 'worker' && canvasElement.transferControlToOffscreen) {
 			const offscreen = canvasElement.transferControlToOffscreen()
 
 			this.canvasWorker.postMessage({
@@ -86,8 +87,9 @@ class City extends Component {
 	* helpers
 	*/
 	onWindowResize() {
+		const { runningOn } = this.state
 		const canvasElement = document.getElementById('city')
-		if (canvasElement.transferControlToOffscreen) {
+		if (runningOn == 'worker' && canvasElement.transferControlToOffscreen) {
 			this.canvasWorker.postMessage({
 				type: 'resize',
 				data: {
@@ -104,8 +106,9 @@ class City extends Component {
 	}
 
 	startAnimation() {
+		const { runningOn } = this.state
 		const canvasElement = document.getElementById('city')
-		if (canvasElement.transferControlToOffscreen) {
+		if (runningOn == 'worker' && canvasElement.transferControlToOffscreen) {
 			this.canvasWorker.postMessage({
 				type: 'startAnimation',
 				data: {
@@ -120,8 +123,9 @@ class City extends Component {
 	}
 
 	stopAnimation() {
+		const { runningOn } = this.state
 		const canvasElement = document.getElementById('city')
-		if (canvasElement.transferControlToOffscreen) {
+		if (runningOn == 'worker' && canvasElement.transferControlToOffscreen) {
 			this.canvasWorker.postMessage({
 				type: 'stopAnimation',
 				data: {
