@@ -14,7 +14,7 @@ class App extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			initialized: false,
+			initialized: true,
 			scenes: [
 				{ name: 'city', active: true },
 				{ name: 'galaxy', active: false }
@@ -37,7 +37,9 @@ class App extends Component {
 	}
 
 	componentDidMount() {
-		setTimeout(() => this.setState({ initialized: true }), 3000)
+		if (!this.state.initialized) {
+			setTimeout(() => this.setState({ initialized: true }), 3000)
+		}
 	}
 
 	componentWillUnmount() {
