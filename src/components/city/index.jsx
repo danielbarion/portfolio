@@ -40,7 +40,6 @@ class City extends Component {
 		window.addEventListener('resize', this.onWindowResize, false)
 		window.addEventListener('startCityAnimation', this.startAnimation, false)
 		window.addEventListener('stopCityAnimation', this.stopAnimation, false)
-		console.log(city)
 		this.start()
 	}
 
@@ -67,9 +66,9 @@ class City extends Component {
 				}
 			}, [offscreen])
 		} else {
-			city.startAnimation(
+			city.initialize(
 				{
-					canvas: offscreen,
+					canvas: canvasElement,
 					innerWidth: window.innerWidth,
 					innerHeight: window.innerHeight,
 					animationRunning
