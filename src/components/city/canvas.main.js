@@ -103,13 +103,19 @@ const initializeCity = () => {
 	const cubes = new THREE.Group();
 	const floors = new THREE.Group();
 
+	let geometry
+	if (renderGPU) {
+		geometry = new THREE.BufferGeometry().fromGeometry(new THREE.BoxGeometry(1, 0.1 + Math.abs(mathRandom(performance.now())) / 100, 1))
+		// geometry = new THREE.BoxBufferGeometry(1, 0, 0, segments, segments, segments)
+	} else {
+		geometry = new THREE.BoxGeometry(1, 0, 0, segments, segments, segments)
+	}
+
+	// https://codeburst.io/improve-your-threejs-performances-with-buffergeometryutils-8f97c072c14b
+
 	for (let i = 1; i < buildings; i++) {
-		let geometry
-		if (renderGPU) {
-			geometry = new THREE.BoxBufferGeometry(1, 0, 0, segments, segments, segments)
-		} else {
-			geometry = new THREE.BoxGeometry(1, 0, 0, segments, segments, segments)
-		}
+		let copyGeometry = geometry.clone()
+
 		const material = new THREE.MeshStandardMaterial({
 			color: setTintColor(),
 			wireframe: false,
@@ -118,8 +124,10 @@ const initializeCity = () => {
 			side: THREE.DoubleSide
 		})
 
-		const cube = new THREE.Mesh(geometry, material)
-		const floor = new THREE.Mesh(geometry, material)
+		// geometry.applyMatrix(new THREE.Matrix4().scale(new THREE.Vector3(1, 1, 1)))
+
+		const cube = new THREE.Mesh(copyGeometry, material)
+		const floor = new THREE.Mesh(copyGeometry, material)
 
 		// Disable shadows to improve fps...
 		cube.castShadow = false
@@ -128,7 +136,7 @@ const initializeCity = () => {
 		cube.rotationValue = 0.1 + Math.abs(mathRandom(8))
 
 		floor.scale.y = 0.05
-		cube.scale.y = 0.1 + Math.abs(mathRandom(8)) / 2
+		// cube.scale.y = 0.1 + Math.abs(mathRandom(8)) / 2
 
 		const cubeWidth = 0.9
 		cube.scale.z = cubeWidth + mathRandom(1 - cubeWidth)
