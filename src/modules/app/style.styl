@@ -23,7 +23,7 @@
 			+breakpoint-inv(mobileL)
 				width 100vw
 				left calc(50% - 50vw)
-				top calc(50% - 180px)
+				top calc(50% - 100px)
 
 			&-title
 				letter-spacing 1px
@@ -163,3 +163,10 @@
 
 			&:nth-child(5)
 				animation-delay: -1s
+
+
+.only-tablet-or-more
+	display inline
+
+	+breakpoint-inv(mobileM)
+		display none

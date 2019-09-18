@@ -153,6 +153,7 @@ class App extends Component {
 		const _transitionElement = 'transition-element'
 		const _loader = 'loader'
 		const _ripple = `${_loader}-ripple`
+		const _onlyTabletOrMore = 'only-tablet-or-more'
 
 		/**
 		 * render functions
@@ -197,7 +198,7 @@ class App extends Component {
 						I’m passionate by programming, games and UI/UX. I've decided to be a front-end because I love resolve performance issues and think in the user, so, doesn't help have a very nice back-end and database performance if we don't have a great front-end and give an amazing experience to the user.
 						<br/>
 						<br/>
-						I love music, games and pet projects. I believe we can change the world to better with a little kindness in day a day because kindness generates kindness. Be kindness, be happy!
+						<span className={_onlyTabletOrMore}>I love music, games and pet projects. I believe we can change the world to better with a little kindness in day a day because kindness generates kindness. Be kindness, be happy!</span>
 					</p>
 				</div>
 			</div>
