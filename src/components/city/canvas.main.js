@@ -157,13 +157,16 @@ const initializeCity = () => {
 	}
 
 	const aparticular = 10
+	const particlesGroup = new THREE.Group()
 
 	for (let h = 1; h < particles; h++) {
 		const particular = new THREE.Mesh(gparticular, gmaterial)
 		particular.position.set(mathRandom(aparticular), mathRandom(aparticular), mathRandom(aparticular))
 		particular.rotation.set(mathRandom(), mathRandom(), mathRandom())
-		smoke.add(particular)
+		particlesGroup.add(particular)
 	}
+
+	smoke.add(particlesGroup)
 
 	const pmaterial = new THREE.MeshPhongMaterial({
 		color: 0x000000,
