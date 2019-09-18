@@ -106,6 +106,9 @@ const initializeCity = () => {
 
   const segments = 1
 
+  const cubes = new THREE.Group();
+  const floors = new THREE.Group();
+
   for (let i = 1; i < buildings; i++) {
     let geometry
     if (renderGPU) {
@@ -142,9 +145,12 @@ const initializeCity = () => {
 
     floor.position.set(cube.position.x, 0, cube.position.z)
 
-    town.add(floor)
-    town.add(cube)
+    cubes.add(cube)
+    floors.add(floor)
   }
+
+  town.add(floors)
+  town.add(cubes)
 
   // Particles
   const gmaterial = new THREE.MeshToonMaterial({ color: 0xFFFFFF, side: THREE.DoubleSide })
